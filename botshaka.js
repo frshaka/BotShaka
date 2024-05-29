@@ -264,7 +264,12 @@ client.on('message', async msg => {
       // MENÇÃO FANTASMA
       let chat = await msg.getChat();
       if (chat.isGroup) {
-        let admin = permissaoBot.find((autor) => autor === msg.author);
+        const participants = chat.participants;
+        const admins = participants.filter(p=>p.isAdmin);
+        const adminMapped = admins.map(a=>a.id._serialized)
+       // console.log(adminMapped);
+       // let admin = permissaoBot.find((autor) => autor === msg.author);
+        let admin = adminMapped.find((autor) => autor === msg.author);
         if (admin !== undefined) {
           let mensagem = msg.body.replace(comando[0], "").trim();
           try {
@@ -274,21 +279,29 @@ client.on('message', async msg => {
             client.sendMessage(msg.from,{ caption: "Marcando todos escondido" },{ mentions: serializedArray });
             delay(3000).then(async function () {
               client.sendMessage(msg.from, mensagem, {mentions: serializedArray,});
+              msg.delete(true);
             });
           } catch (e) {
             console.log(e);
           }
         } else {
+          msg.reply('Você não pode enviar esse tipo de mensagem!!!', null);
+          msg.delete(true);
           console.log("usuario " + msg.author + " não pode utilizar essa função.");
         }
       }
     }
 
-    // Marcar Todos
+  // Marcar Todos
   if (comando[0] === "!todos") {
     const chat = await msg.getChat();
     if (chat.isGroup) {
-      let admin = permissaoBot.find((autor) => autor === msg.author);
+      const participants = chat.participants;
+        const admins = participants.filter(p=>p.isAdmin);
+        const adminMapped = admins.map(a=>a.id._serialized)
+       // console.log(adminMapped);
+       // let admin = permissaoBot.find((autor) => autor === msg.author);
+        let admin = adminMapped.find((autor) => autor === msg.author);
         if (admin !== undefined) {
           let text = "";
           let mentions = [];
@@ -301,6 +314,7 @@ client.on('message', async msg => {
           }
 
           await chat.sendMessage(text, { mentions });
+          msg.delete(true);
       }
     }
   }
