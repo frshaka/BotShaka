@@ -260,7 +260,7 @@ app.post('/shaka-media', [
 client.on('message', async msg => {
   if (msg.body === null) return;
     let comando = msg.body.split(" ");
-    if (comando[0].toLowerCase === "!aviso") {
+    if (comando[0].toLowerCase() === "!aviso") {
       // MENÇÃO FANTASMA
       let chat = await msg.getChat();
       if (chat.isGroup) {
