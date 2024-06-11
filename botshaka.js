@@ -340,7 +340,7 @@ Digite *!contato* Para entrar em contado com o Desenvolverdor.`
 
 
 client.on("message", (message) => {
-  if (message.body === "!contato"){
+  if (message.body === "!contato" || message.body === "!CONTATO"){
     const txtMensagem = `*Desenvolvido por Felipe Rosa*
 
 Em caso de problemas ou sujestões de melhorias basta enviar um email para feliperosait@gmail.com`
