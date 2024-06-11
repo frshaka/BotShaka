@@ -320,13 +320,13 @@ client.on('message', async msg => {
 });
 
 client.on("message", async (message) => {
-  if (message.body === "!ping") {
+  if (message.body === "!ping" || message.body === "!PONG") {
     message.reply("pong");
   }
 });
 
 client.on("message", (message) => {
-  if (message.body === "!ajuda"){
+  if (message.body === "!ajuda" || message.body === "!AJUDA"){
     const txtMensagem = `Digite *!todos* para realizar a marcação de todos os membros.
 
 Digite *!aviso* seguido de sua mensagem para realizar a marcação fantasma e notificar todos os membros, mesmo que o grupo esteja silenciado.
