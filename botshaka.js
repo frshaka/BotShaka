@@ -259,8 +259,9 @@ app.post('/shaka-media', [
 
 client.on('message', async msg => {
   if (msg.body === null) return;
-    let comando = msg.body.split(" ");
-    if (comando[0].toLowerCase() === "!aviso") {
+    let acao = msg.body.split(" ");
+    let comando = acao[0].toLowerCase();
+    if (comando === "!aviso") {
       // MENÇÃO FANTASMA
       let chat = await msg.getChat();
       if (chat.isGroup) {
@@ -271,7 +272,7 @@ client.on('message', async msg => {
        // let admin = permissaoBot.find((autor) => autor === msg.author);
         let admin = adminMapped.find((autor) => autor === msg.author);
         if (admin !== undefined) {
-          let mensagem = msg.body.replace(comando[0], "").trim();
+          let mensagem = msg.body.replace(acao[0], "").trim();
           try {
             const serializedArray = chat.participants.map(
               ({ id: { _serialized } }) => _serialized
@@ -293,7 +294,7 @@ client.on('message', async msg => {
     }
 
   // Marcar Todos
-  if (comando[0] === "!todos") {
+  if (comando === "!todos") {
     const chat = await msg.getChat();
     if (chat.isGroup) {
       const participants = chat.participants;
@@ -307,17 +308,15 @@ client.on('message', async msg => {
           let mentions = [];
 
           for (let participant of chat.participants) {
-            const contact = await client.getContactById(participant.id._serialized);
-
-            mentions.push(contact);
-            text += `@${participant.id.user} `;
+              mentions.push(`${participant.id.user}@c.us`);
+              text += `@${participant.id.user} `;
           }
-
           await chat.sendMessage(text, { mentions });
           msg.delete(true);
       }
     }
   }
+
 });
 
 client.on("message", async (message) => {
