@@ -320,8 +320,6 @@ client.on('message', async msg => {
 
   if (comando === "!gpt") {
     let mensagem = msg.body.replace(acao[0], "").trim();
-    
-
    //const apiKey = 'ALTERAR AQUI A CHAVE DA API!';
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
