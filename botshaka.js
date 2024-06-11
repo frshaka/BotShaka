@@ -34,7 +34,7 @@ app.get('/', (req, res) => {
 });
 
 // NUMEROS AUTORIZADOS
-const permissaoBot = ["5515991236228@c.us", "5521981389149@c.us", "558186816992@c.us", "558196869075@c.us", "5518996318958@c.us", "5511972840522@c.us", "558598047424@c.us" ];
+//const permissaoBot = ["5515991236228@c.us", "5521981389149@c.us", "558186816992@c.us", "558196869075@c.us", "5518996318958@c.us", "5511972840522@c.us", "558598047424@c.us" ];
 
 const client = new Client({
   authStrategy: new LocalAuth({ clientId: 'botShaka' }),
@@ -317,7 +317,43 @@ client.on('message', async msg => {
     }
   }
 
+
+  if (comando === "!gpt") {
+    let mensagem = msg.body.replace(acao[0], "").trim();
+    
+
+   //const apiKey = 'ALTERAR AQUI A CHAVE DA API!';
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+    const chatGPTRequest = async (message) => {
+      try {
+        const response = await axios.post(
+          apiUrl,
+          {
+            model: 'gpt-4o',
+            messages: [{ role: 'user', content: message }],
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`,
+            },
+          }
+        );
+        const reply = response.data.choices[0].message.content;
+        client.sendMessage(msg.from, reply);
+      } catch (error) {
+        console.error('Erro ao chamar a API do ChatGPT:', error);
+      }
+    };
+
+    chatGPTRequest(mensagem);
+  }
 });
+
+
+
+
 
 client.on("message", async (message) => {
   if (message.body === "!ping" || message.body === "!PONG") {
