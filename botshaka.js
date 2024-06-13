@@ -11,6 +11,7 @@ const port = process.env.PORT || 8000;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
+const cron = require("node-cron");
 
 function delay(t, v) {
   return new Promise(function(resolve) { 
@@ -350,7 +351,14 @@ client.on('message', async msg => {
 });
 
 
-
+client.on('message', async (msg) => {
+  if (msg.body === "!clear"){
+    const chat = await msg.getChat();
+    await chat.clearMessages();
+    // Fired whenever a message is only deleted in your own view.
+  console.log(msg.body); // message before it was deleted.
+  }
+});
 
 
 client.on("message", async (message) => {
