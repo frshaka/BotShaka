@@ -11,7 +11,7 @@ const port = process.env.PORT || 8000;
 const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
-const cron = require("node-cron");
+const schedule = require('node-schedule');
 
 function delay(t, v) {
   return new Promise(function(resolve) { 
@@ -33,9 +33,6 @@ app.get('/', (req, res) => {
     root: __dirname
   });
 });
-
-// NUMEROS AUTORIZADOS
-//const permissaoBot = ["5515991236228@c.us", "5521981389149@c.us", "558186816992@c.us", "558196869075@c.us", "5518996318958@c.us", "5511972840522@c.us", "558598047424@c.us" ];
 
 const client = new Client({
   authStrategy: new LocalAuth({ clientId: 'botShaka' }),
@@ -94,6 +91,82 @@ client.on('disconnected', (reason) => {
   client.initialize();
 });
 });
+
+client.on('ready', async () => {
+  // Agenda a tarefa para rodar diariamente às 21:00
+  schedule.scheduleJob('0 21 * * *', async () => {
+      console.log('Iniciando a limpeza das mensagens dos grupos...');
+
+          // Obtém todos os chats do usuário
+          const chats = await client.getChats();
+
+          // Filtra apenas os grupos
+          const groups = chats.filter(chat => chat.isGroup);
+
+          // Exibe os IDs e nomes dos grupos
+          groups.forEach(group => {
+              console.log(`ID do grupo: ${group.id._serialized}, Nome do grupo: ${group.name}`);
+              group.clearMessages();
+          });
+      console.log('Limpeza das mensagens dos grupos concluída.');
+
+  });
+});
+
+client.on('group_join', async (notification) => {
+  console.log('Novos membros adicionados ao grupo.');
+
+  const groupId = notification.id.remote;
+  if (groupId === '120363260286196627@g.us'){
+    for (const newParticipantId of notification.recipientIds) {
+      try {
+        const txtMensagem = `Aeeeewww! Bem-vindo ao grupo da EneasRedpill. Para facilitar tanto a sua quanto a nossa vida, estou enviando algumas informações úteis e importantes.
+
+        *****ANTES DE QUALQUER COISA, NÃO ADIANTA ME RESPONDER OU ME ENVIAR MENSAGEM PRIVADA PORQUE EU SOU SÓ UM BOT!!!!!******
+
+        ID da Guilda: 37901102
+
+        Tag (Obrigatória): 气
+        
+        Web: https://eneasredpill.com/
+        
+        Comunidade: https://chat.whatsapp.com/HcuJY3SX6pR6zSHLwQIDKn
+        
+        PDF:  https://rb.gy/i3fgtl
+        
+        Contatos: https://docs.google.com/spreadsheets/d/1tfMC0wnL6h8YPiEFJQjnJdzNRtdWOYWAGZBbgjqyODk/edit?usp=sharing
+        
+        Drive: https://drive.google.com/drive/folders/1gpAhAvgykgUQa6PWMaoOhCMevte0BxeD?usp=sharing
+        
+        Drive dos prints da sua conta: https://drive.google.com/drive/folders/1iivltFz3vx4pymO5bvqs-qntlSdIRUaJ?usp=drive_link
+        
+        Finalidade dos grupos:
+        * Deepweb: Nenhuma;
+        * GvG: Organização da temporada de GvG;
+        * GvG Arayashiki: Organização da temporada de GvG da guild Arayashiki;
+        * Alpha/Bravo: Eram para organização da temporada de Relics. Mas a próxima temporada teremos uma organização mais elaborada.
+        
+
+        Se tiver alguma dúvida manda um salve pra qualquer membro da Adm da guilda que a gente te ajuda!!!
+
+        Contatos de suporte da EneasRedpill:
+        admin@eneasredpill.com
+        +552198138-9149
+        
+        Contatos de suporte da Wanda no SSLOJ:
+        seiyaloj@gmail.com
+        https://instagram.com/saintseiyaloj.global?igshid=MzRlODBiNWFlZA==`;
+
+          // Envia uma mensagem de boas-vindas no privado do novo membro
+          await client.sendMessage(newParticipantId,  txtMensagem);
+          console.log(`Mensagem de boas-vindas enviada para: ${newParticipantId}`);
+      } catch (error) {
+          console.error(`Erro ao enviar mensagem para ${newParticipantId}:`, error);
+      }
+  }
+  }
+});
+
 
 // Send message
 app.post('/shaka-message', [
@@ -262,15 +335,15 @@ client.on('message', async msg => {
   if (msg.body === null) return;
     let acao = msg.body.split(" ");
     let comando = acao[0].toLowerCase();
+    
+    // MENÇÃO FANTASMA
     if (comando === "!aviso") {
-      // MENÇÃO FANTASMA
+      
       let chat = await msg.getChat();
       if (chat.isGroup) {
         const participants = chat.participants;
         const admins = participants.filter(p=>p.isAdmin);
         const adminMapped = admins.map(a=>a.id._serialized)
-       // console.log(adminMapped);
-       // let admin = permissaoBot.find((autor) => autor === msg.author);
         let admin = adminMapped.find((autor) => autor === msg.author);
         if (admin !== undefined) {
           let mensagem = msg.body.replace(acao[0], "").trim();
@@ -318,10 +391,59 @@ client.on('message', async msg => {
     }
   }
 
+  if (comando === "!guild") {
+    const chat = await msg.getChat();
+    if (chat.isGroup) {
+      const participants = chat.participants;
+        const admins = participants.filter(p=>p.isAdmin);
+        const adminMapped = admins.map(a=>a.id._serialized)
+       // console.log(adminMapped);
+       // let admin = permissaoBot.find((autor) => autor === msg.author);
+        let admin = adminMapped.find((autor) => autor === msg.author);
+        if (admin !== undefined) {
 
+      const txtMensagem = `ID: 37901102
+
+Tag: 气
+
+Web: https://eneasredpill.com/
+
+Comunidade: https://chat.whatsapp.com/HcuJY3SX6pR6zSHLwQIDKn
+
+PDF:  https://rb.gy/i3fgtl
+
+Contatos: https://docs.google.com/spreadsheets/d/1tfMC0wnL6h8YPiEFJQjnJdzNRtdWOYWAGZBbgjqyODk/edit?usp=sharing
+
+Drive: https://drive.google.com/drive/folders/1gpAhAvgykgUQa6PWMaoOhCMevte0BxeD?usp=sharing
+
+Drive dos prints da sua conta: https://drive.google.com/drive/folders/1iivltFz3vx4pymO5bvqs-qntlSdIRUaJ?usp=drive_link
+
+Finalidade dos grupos:
+* Deepweb: Nenhuma;
+* GvG: Organização da temporada de GvG;
+* GvG Arayashiki: Organização da temporada de GvG da guild Arayashiki;
+* Alpha/Bravo: Eram para organização da temporada de Relics. Mas a próxima temporada teremos uma organização mais elaborada.
+
+Contatos de suporte da EneasRedpill:
+admin@eneasredpill.com
++552198138-9149
+
+Contatos de suporte da Wanda no SSLOJ:
+seiyaloj@gmail.com
+https://instagram.com/saintseiyaloj.global?igshid=MzRlODBiNWFlZA==`;
+
+    await chat.sendMessage(txtMensagem);
+          msg.delete(true);
+    }
+  }
+};
+
+
+
+  //ChatGPT
   if (comando === "!gpt") {
     let mensagem = msg.body.replace(acao[0], "").trim();
-   //const apiKey = 'ALTERAR AQUI A CHAVE DA API!';
+    //const apiKey = '';
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
     const chatGPTRequest = async (message) => {
@@ -351,14 +473,7 @@ client.on('message', async msg => {
 });
 
 
-client.on('message', async (msg) => {
-  if (msg.body === "!clear"){
-    const chat = await msg.getChat();
-    await chat.clearMessages();
-    // Fired whenever a message is only deleted in your own view.
-  console.log(msg.body); // message before it was deleted.
-  }
-});
+
 
 
 client.on("message", async (message) => {
@@ -385,7 +500,7 @@ client.on("message", (message) => {
   if (message.body === "!contato" || message.body === "!CONTATO"){
     const txtMensagem = `*Desenvolvido por Felipe Rosa*
 
-Em caso de problemas ou sujestões de melhorias basta enviar um email para feliperosait@gmail.com`
+Em caso de problemas ou sugestões de melhorias basta enviar um email para feliperosait@gmail.com`
     message.reply(txtMensagem);
   }
 });
