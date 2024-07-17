@@ -1,0 +1,241 @@
+Body Building
+Pessoal, antes do "building" dos cavaleiros propriamente dito, passaremos por conceitos de como o SSLOJ funciona (habilidades, efeitos, atributos, etc).
+
+É importante termos 100% de ciência do que está acontecendo ao iniciarmos uma batalha... Após isso, sim, é que vamos para o momento "BIRL"!
+
+Manipulando jóias, armaduras, constelações, artefatos e arayas para encontrar o build mais adequado dos seus cavaleiros tanto perante seu estilo de jogo, quanto pela situação de defesa do oponente (mas essa parte de "Técnicas de Combate" abordaremos com maiores exemplos em outra página).
+
+Como aqui é um "building unitário", ou seja, independente para cada cavaleiro. Questões como Estigmas, Provação, Estátuas,
+
+A maioria dos termos focarei em inglês para centralizar as definições, porque as traduções para pt-BR são horripilantes. Dito isso, recomendo copiosamente que todos mudem o idioma do jogo para en-US (inglês), assim nenhum conceito será confundido. De vez em quando utilizarei os termos cotidianos (tipo falar "ult" ao invés de "might"... ou talvez bote a tradução entre parêntesis)... Mas, na maior parte das vezes, usarei os nomes originais em inglês. Em outras coisas do jogo não há problema falarmos em português (Ult / Ultada, Provação, Estátuas, etc) mas na parte de habilidades e atributos, por ter um vocabulário extenso, é muito fácil confundir tudo.
+
+Estudem, tchutchucos...
+
+
+Habilidades
+Might (Técnica Secreto... ou “ult”, “ultar”, “ultada”, “ultimate”, na língua do povão... ou "Mistério" na tradução zoada de algumas arayas): a que somente é executada após o cavaleiro acumular 10.000 de cosmo (esse número é o mesmo para qualquer cavaleiro e em qualquer nível; exceto, óbvio, o Poseidon que quebrou a 4ª parede e inventou uma regra exclusiva de consumo e execução de sua ult). #IMPORTANTE: Cosmo é acumulado por 3 fatores: externo (cartas, artefatos, habilidades, etc), dano recebido, e dano dado por ataque básico... Cada montante de dano que damos acumula alguma proporção de cosmo. Quanto mais dano dermos, mais cosmo. Ah! E vale ressaltar, também, que fizeram uma anomalia no Shiryu Divino e “enfiaram” uma habilidade Passiva dentro da descrição de Técnica Secreta dele. É como se ele tivesse 5 habilidades, no total. Shiryu Divino ultando, ou não, ela rodará da mesma forma que uma passiva rodaria (não a ult inteira, apenas o trecho da passiva que está lá).
+
+Loop (Ciclo): De tempos em tempos (cooldown que o jogo define para cada habilidade e, aparentemente, não é informado em canto algum) essa habilidade será executada durante a partida. Pode ser de 5 em 5 segundos, 3 em 3 segundos, também depende do Haste do seu cavaleiro (só ressaltando: Se na descrição fala que tal efeito, veneno, por exemplo, vai durar 5s... Isso não quer dizer que o intervalo do loop é esse e sim que é o efeito da habilidade executada em si... saibam separar essa interpretação). E não, ATK Speed não influencia o intervalo do Loop. #importante
+
+Trigger: (Acionar): Precisa de um estímulo para ser desencadeada.
+Exemplo: “sempre que receber um ATK, o Seiya Divino terá 50% chances de contra-atacar com meteoros de pégasus”, “sempre que Dohko Ancião receber um ataque, ele obtém redução de tanto de dano por tantos segundos”, ou seja, essas habilidades são acionadas, ou “triggam”, após o dito evento de um ataque ser realizado contra esses cavaleiros. Os estímulos para acionar a habilidade nem sempre são ataques, podem ser efeitos (como a Lenda da Fênix do Ikki Divino: o estímulo para desencadear a habilidade é o Ikki morrer). #importante
+
+Passive (Passiva): A habilidade existe ao longo da partida “e ponto”. Claro que algumas, como a do Hyoga Divino e do Seiya Divino se assemelham como trigger pois possuem, uns pré-requisitos para realizarem sua proposta. Mas, a mais importante diferença aqui é que elas não são habilidades a “serem executadas/disparadas pelo cavaleiro” como as de trigger, ultimate, ou algumas aberturas… Logo, elas não possuem o risco de serem interrompidas por um efeito de controle comum (exceto se botarem a carta Araya do Seiya Divino no meio da brincadeira). Elas estão lá rodando, independente do cavaleiro ser congelado, ter tropeçado, virado de ponta cabeça, receber stun, etc.
+
+Open (Abertura): Habilidade que será apenas desencadeada no início da partida.
+
+Halo (Auréola): Não consigo ver muita diferença dessa habilidade para a Passive. Se alguém descobrir o detalhe de diferença, me avisa que atualizo aqui.
+Então vamos a algumas suposições: Passivas se mantém ao longo da partida mesmo se o cavaleiro morrer (Halos talvez não), Passives podem ser canceladas em habilidades como do Aiacos ou a carta exclusiva do Seiya (as skills de Halos talvez não sejam canceladas nesses casos)... Teríamos que testar para descobrir, mas as skills de Halos são de efeitos tão sutis que não consigo pensar em um cenário de teste viável, até então.
+
+Efeitos
+----- DE DANO -----
+
+Burn (Queimadura): Efeito que causa dano contínuo e aumenta a CHANCE do cavaleiro queimado receber ataque crítico. #importante
+
+Bleed (Sangramento): Efeito que causa dano contínuo e reduz a cura recebida.
+
+Poison (Veneno): Efeito que causa dano contínuo.
+
+Electricity (Eletricidade): Efeito que causa dano contínuo e aumenta o DANO recebido pelo cavaleiro eletrocutado. #importante
+
+----- DE CONTROLE -----
+
+Freeze (Congelar): Efeito causa interrupção, não permite movimento (ataque e esquiva) e pára com o acúmulo do cosmo.
+
+Stun / Daze (Atordoar): Efeito que causa interrupção.
+
+Silence (Silenciar): Efeito que causa interrupção e não permite execução de habilidades (Triggers, Loops e Mights / Ults... Passives e Halos não se aplicam ao Silence).
+
+Blind (Cegar): Efeito que faz com que os ataques não acertem.
+
+----- TERMOS GERAIS -----
+
+Bless (Blessed / Abençoar / Benção): O cavaleiro Blessed se torna imune a efeitos de controle.
+
+Dissipate / Dispell / Compulsively Dispell / Purification / Strong Purification: As vezes o termo usado para remover buffs de atributos (Exemplo: +ATK, +DEF, +Haste, etc) as vezes o mesmo termo é usado remover efeitos (tanto de dano quanto de controle. Exemplo: Burn, Freeze, Poison etc). Aí nem sei se é erro na tradução em inglês ou se é falta de qualidade textual mínima. Precisa ler e absorver o contexto da parada, boa sorte.
+
+Atributos
+Só para adiantar, tirando os 3 básicos (HP, ATK e DEF) alguns atributos aparecem como PONTOS e outros aparecem como PERCENTUAIS... As vezes, mesmo ocorre no mesmo atributo, mas em locais de leitura diferentes ou traduções diferentes (exemplo: nas jóias o CRIT é informado em PONTOS, mas nos atributos CRIT se apresenta um PERCENTUAL). Tenham em mente que cada 10 pontos equivale a 1%, simples assim... Logo se uma araya ou jóia informa que vai subir 85 de Tenacity (e não botou "%" ao lado) é porque vai aumentar 85 PONTOS de Tenacity, logo, 8,5% de aumento. Em alguns textos, existe uma palavra para uma PONTOS e outra para PERCENTUAL (ex: Resilience são pontos e Tenacity percentual)... Mas em outros isso se perde também (kkkk).
+
+Enfim, para todos os efeitos, sempre comentarei em percentual nesse tutorial.
+
+HP: Quantia bruta dos pontos de vida.
+
+ATK: Quantia bruta dos pontos de ataque. Ao longo da partida, após considerar outros cálculos, "buffs" e "debuffs" teremos a quantia LÍQUIDA do ataque normal do seu cavaleiro e ela se subtrai da quantia líquida da defesa do cavaleiro que ele está atacando. Somente a partir daí é que será realizado o dano final que vai subtrair o HP do cavaleiro oponente.
+
+DEF: Quantia bruta dos pontos de defesa.
+
+ATKS (ATK Speed / Velocidade de Ataque): Reduz o intervalo entre os ataques normais por percentual.
+Exemplo: Se com 100% de ATKS tal cavaleiro seu dá 3 ataques por segundo, fazendo uma regra de 3, com 133,3% de ATKS esse mesmo cavaleiro passará a realizar 4 ataques por segundo. Lembrando: ATK Speed não influencia em NADA o cooldown de uma skill Loop ou o acionamento de uma skill Trigger. No máximo acelera o Might (ult) por conta de mais ATK Speed ser o mesmo que dar mais dano por segundo, logo, acumula cosmo mais rápido e ulta mais rápido. #importante
+
+CRIT (Crit Rate / Crítico, ou "Dano DMG" na nossa tradução espetacular): Percentual dos ataques normais que se tornarão ataques críticos. Ataques críticos ignoram a defesa do oponente.
+Exemplo: Se você realiza 4 ataques por segundo e possui 25% de CRIT, seu cavaleiro realizará 1 ataque crítico a cada 4 ataques normais. #importante
+
+Tenacity / Resilience (Tenacidade / Resiliência): Percentual que reduz o percentual de CRIT de um cavaleiro que está te atacando.
+Exemplo: Um Aiolos do oponente tem 25% de CRIT e está atacando seu Shun Divino que possui 15% de Tenacity. A subtração é direta (e não por razão entre os percentuais), logo quando o Aiolos atacar o Shun Divino, ele realizará apenas 10% de CRIT e não terá 1 CRIT a cada 4 ataques, mas sim 1 CRIT a cada 10 ataques apenas... E isso é só porque o Shun Divino está com essa Tenacity toda, porque se o Aiolia, por ventura, mirar em outro cavaleiro durante a mesma partida o cálculo de CRIT do atacante vs Tenacity do defensor será OUTRO. Esses cálculos são feitos no momento do dano ser executado entre 2 cavaleiros naquele exato momento, não confundam isso com "buffs/debuffs" que perduram a partida naquele cavaleiro independente dos alvos. #importante
+
+CRIT DMG (Crit Dam / Crit DMG Rate / Crit Damage / Dano Crítico / Taxa DMG): Apenas um percentual de bônus no dano crítico resultante.
+Exemplo: Chegou o momento de dar dano crítico de um cavaleiro seu... Ele daria 50mil de dano se fosse dano normal contabilizando a DEF do oponente, mas como é CRIT, ele ignorará a DEF e daria 80mil de dano, digamos... Mas, ele tem uma araya que aumenta o Crit DMG em 20%, logo seu dano final contando com o benefício do CRIT DMG será de 96mil.
+
+Toughness (Taxa Resis / "Resistência" - JOGUEM EM INGLÊS POIS USAM AQUI A MESMA PALAVRA PARA COISAS COMPLETAMENTE DIFERENTES!!!!!): Semelhante à interação entre Tenacity do defensor com o CRIT do atacante, cada percentual do Toughness de um defensor reduz o percentual do bônus CRIT DMG do atacante ao longo do cálculo. Se tu não entendeste essa explicação, releia a descrição do Tenacity até entender. #importante
+
+Dodge (Esquiva): Percentual que define quantos ataques o cavaleiro defensor irá ignorar do atacante.
+Exemplo: Se o Dodge do seu cavaleiro é 20%, a cada 5 ataques do oponente, ele se esquivará de 1.
+
+Hit / Accuracy (ACC / Hit Rate / Precisão): Semelhante à interação entre Tenacity do defensor com o CRIT do atacante, só que ao contrário, cada percentual do Hit de um ATACANTE reduz o percentual de Dodge do DEFENSOR. Se tu não entendeste essa explicação, releia a descrição do Tenacity até entender.
+
+Life Drain / Leech (LD / Taxa Vamp/ Sanguessuga / Vampirismo): Percentual de dano resultante (dano líquido) realizado pelo seu cavaleiro atacante que retorna para ele em HP.
+
+Healing (Cura): Percentual que dá bônus aos valores de efeito de cura que seu cavaleiro DÁ AOS OUTROS.
+
+Received Healing (RH / Cura Recebida): Percentual que dá bônus aos valores de efeito de cura que seu cavaleiro RECEBE.
+
+Haste (Swiftness / Pressa): Nesse caso, o valor do Haste sempre aparece no formato de PONTOS em todos os cantos do jogo. E não dá para saber se a cada 10 pontos de Haste é 1% a menos de intervalo entre ações, o jogo não detalha isso. Mas, voltando, Haste é o responsável por acelerar os intervalos de ações do seu cavaleiro executa. Tipo o "2x" que damos nos áudios do Eva. Já o Striker vive com +400 de Haste por default ao falar, em contrapartida. Então, seja ATK Speed ou cooldown de Loop, tudo acelera ao mesmo tempo (consequentemente você dará mais dano e o cosmo acumulará mais rápido também). #importante
+
+Damage Boost ( DMG Boost / DB / Bônus Dano): Percentual que AUMENTA os valores de dano LÍQUIDO (final / resultante) que seu cavaleiro atacante DÁ no defensor.
+
+Damage Res ( DMG Res / DR / Red Dano): Percentual que REDUZ os valores de dano LÍQUIDO que seu cavaleiro defensor RECEBE do atacante.
+
+Expose ("Olhem além do valor" / "Transparência" SIM!!! Os nomes em ptbr são exatamente esses kkkkkkk) versus Resistance ("Resistência" - JOGUEM EM INGLÊS POIS USAM AQUI A MESMA PALAVRA PARA COISAS COMPLETAMENTE DIFERENTES!!!!!): Em cenários onde um cavaleiro atacante tenta jogar um efeito de controle contra um cavaleiro defensor, para cada ponto a mais do Resistance do defensor contra o Expose do atacante, há 2% de chances do efeito de controle NÃO funcionar contra o cavaleiro defensor. #importante
+
+
+Jóias (Accessory)
+Vamos começar entendendo que cada set de jóias (inteligência, iluminação, sabedoria, etc) só tem diferença enquanto a jóia é "RED" ou "RED Avançada" (a que tem borda nos cantos.
+
+Após isso, todas elas viram Ômega de cada CLASSE. Então, se as jóias forem da mesma CLASSE (a de guerreiro/suporte, por exemplo) você pode upar para "O1" 4 jóias diferentes que todas farão parte do mesmo conjunto O1. #importante
+
+Normalmente, apelidamos jóias pelo prefixo "O" (O1, O2, O3).
+
+Dito isso, as tabelas abaixo ilustram os atributos fixos e variáveis que cada tipo de jóia pode oferecer como benefício no jogo.
+
+ATRIBUTOS FIXOS
+Tipo	Atributo Fixo 1	Atributo Fixo 2
+Ring	ATK	DEF
+Earrings	HP	ATK
+Bracelet	HP	ATK
+Pendant	HP	DEF
+Os atributos fixos são os 2 que já vêm predefinidos em cada tipo de jóia, independente do nome, classe ou nível ômega dela.
+ATRIBUTOS RANDOM
+Classe	Tipo	Atributo Random 1	Atributo Random 2	Atributo Random 3	Atributo Random 4
+Protector	Ring	HP	Hit	ATK	DODGE
+Protector	Earrings	ATK	CRIT	DEF	Tenacity
+Protector	Bracelet	HP	Hit	DEF	Tenacity
+Protector	Pendant	HP	DODGE	DEF	CRIT
+Warrior
+Assist	Ring	HP	Hit	ATK	CRIT
+Warrior
+Assist	Earrings	ATK	Hit	DEF	DODGE
+Warrior
+Assist	Bracelet	HP	DODGE	ATK	Tenacity
+Warrior
+Assist	Pendant	HP	CRIT	DEF	Tenacity
+Skilled
+Assassin	Ring	ATK	CRIT	DEF	Tenacity
+Skilled
+Assassin	Earrings	HP	DODGE	ATK	Tenacity
+Skilled
+Assassin	Bracelet	ATK	Hit	DEF	DODGE
+Skilled
+Assassin	Pendant	HP	Hit	ATK	CRIT
+Os atributos RANDOM são os 2 que só são revelados quando você recebe ou compra uma jóia, CADA CLASSE de cavaleiro possui uma seleção de atributos random própria.
+QUANTIDADES TOTAIS DE ATRIBUTOS RANDOM POR CLASSE
+Classe	ATK	CRIT	Hit	DODGE	DEF	Tenacity	HP
+Protector	2	2	2	2	3	2	3
+Warrior
+Assist	3	2	2	2	2	2	3
+Skilled
+Assassin	4	2	2	2	2	2	2
+Resumo somando todas possibilidades por classe.
+Enfim, tenha paciência e vá acumulando jóias vermelhas antes de avançá-las (bordas nos cantos), upá-las (estrelas) ou promovê-las (ômega). Pois o melhor custo benefício é ESPERAR tirar uma jóia com os 2 atributos random que você deseja para tal cavaleiro e já reservar para ele... Para, aí sim, DEPOIS upá-la, avançá-la e promovê-la.
+
+
+Pois, em cada reforjada (tentativa de alterar os atributos random), gasta-se o Orichalcum. Um cubo prateado bem difícil de farmar. E depender disso para 2 atributos EXATOS que você precisa é jogar com a sorte (ou azar) em 1/12, ou 8,333%, de chances para cada jóia que você precisar reforjar. Então, para as jóias normais, escolha esperar, iluminado... Agora, para umas jóias bizarras de raras que comentarei abaixo, é que esse recurso de reforge foi criado: as jóias Astrais!
+
+
+Cavaleiros Astrais (Dohko Roshi / Dohko Ancião, Pope Shion / Shion GM, 5 bronzes dourados, Hécate, etc) só aceitam como jóias as com o símbolo HEXAGONAL. E elas só são encontradas na LOJA DA GUILD, em mais nenhum outro lugar. #importante
+
+Armadura (Cloth)
+As armaduras de um cavaleiro são liberadas para up após o mesmo chegar às 9* (9 estrelas, ou 4 estrelas douradas). 
+
+Normalmente apelidamos o nível de armaduras pelo prefixo "A" (A1, A10, A20, A30) de acordo com as 4 skills liberadas.
+
+
+Mas, nem sempre upamos armaduras apenas para liberar skill. Após o A30, é bom dar continuidade em alguns cavaleiros estratégicos / meta, apenas para destacar alguns atributos como ATK/DEF, ou o absurdo do buff de Haste no Shun Divino:
+
+
+Mas isso, claro, se você já tiver A30 em todos outros cavaleiros que necessita na rotina. Pois o custo de armadura até o A40 é altíssimo.
+
+Alguns exemplos de cavaleiros que se destacam justamente pelo A30: Shun de Virgem, Aiolos, Ikki Divino, Aiolia Divino, Camus, Afrodite, Suikyo, Mu, MDM, Asterion.
+
+Constelação (Nebula / Constellation)
+A constelação de um cavaleiro é liberada após ele atingir 11* (ou "1 red"). Há 3 tipos de "estrelas/pontos da constelação" (ou Star Life): Solar, Lunar e Cardinal. E 4 tipos de qualidade desses pontos: Blue, Purple, Gold e Exclusivo. Só o último nos interessa (Purple e Blue, sempre aniquile, e Gold sempre aniquile o excedente), que é o que libera as habilidades de constelação: C3, quando o cavaleiro possui 3 exclusivas e C9 quando possui 9 exclusivas... Mas, serei mais específico, pois esse ponto pode confundir: só atinge C9 se o cavaleiro possuir 3 exclusivas de Solar + 3 exclusivas de Lunar + 3 exclusivas de Cardinal. #importante
+
+Nas roletas há a infeliz chance de você repetir, né?! Então, você pode ter um cavaleiro "C8" que possui 3 Solar, 3 Lunar e 2 Cardinal, faz uma roleta e recebe mais uma exclusiva desse cavaleiro, mas é +1 Solar. Ele não conseguirá ficar C9. Você, no máximo, utilizará para fundir um Solar com outro e botá-lo "+1" (são 4 níveis para cada estrela/ponto de constelação: normal, +1, +2 e "MAX... só aumenta os atributos). Logo, o máximo que um cavaleiro pode chegar em constelação é o C36.
+
+E seu up é com base na sorte das roletas de constelação (e não por recurso acumulado, como no caso das armaduras). Ou por um recurso chamado Mind Power Crystal que é uma pedrinha vermelha que já escolhe para qual cavaleiro criar a constelação.
+
+
+
+
+Relíquias
+
+PRÓXIMO RELÍQUIAS: 03/08/2024 – 15h00
+
+
+
+É EXTREMAMENTE IMPORTANTE que você CLIQUE AQUI (https://youtu.be/wgWzMTzN5Qk?si=iAsPtA0gIVBC0xgG) e assista o vídeo até o fim. Dependendo da sua dúvida, saberemos que você não o assistiu. Na EneasRedpill nossas dúvidas são exploradas de maneira situacional, dúvidas sobre mecânica básica do jogo é questão de acessar os vídeos que a gente recomenda. Não dá para ter preguiça.
+
+Relíquias é um evento cujo o desafio principal é a velocidade. A cooperação só funciona se todo mundo for rápido. Então, logo quando o evento iniciar, entre e:
+
+Cadastre 15 cavaleiros para um time A (que só será usado SOMENTE contra os Boss) e times B/C (para conquistar casinhas). O time A nós predefinimos para todo mundo, abordaremos mais abaixo a recomendação. Importante: NÃO CADASTRE MAIS QUE 15 cavaleiros. Isso será explicado abaixo (e, em parte no vídeo do Chapeleta, que explica como funciona o “reset de energias”);
+
+Teremos grupos de WPP estabelecendo os caminhos e quantidades de casas para cada pessoa. Esteja ciente da sua tarefa e quando/como executá-la;
+
+A primeira classe a ser upada o primeiro nível tem que ser a que tem mais cavaleiros DE DANO no seu time B/C para facilitar as batalhas das suas ocupações iniciais. Se seu time B tem afrodite, poseidon, MDM, hypnos e mu, por exemplo, a classe predominante é a Habilidade, então upe ela apenas 1 nível (os 5 pontos da estrela) logo no primeiro passo de investimento do evento;
+
+A partir daí, pode focar na de guerreiro. Supondo que, contra os bosses, o Seiya Divino, Aiolia normal e Aiolia Divino sejam o seus maiores DPS (DPS = damage per second… apelido para cavaleiros que sejam as maiores bombas de dano por segundo). Ocasionalmente, você vai parar de upar a classe do seu principal DPS para ter que upar “todas” as outras. Mas faça isso apenas para completar as missões da exploração e depois volte a upar a classe do seu DPS principal;
+
+IMPORTANTE: Nos últimos upgrades da classe guerreiro (nível 5), apenas upe 2 atributos que buffam dano. Pois o upgrade não sobe para nível 6 em diante. E gastar recurso com atributo que dá +HP ou +DEF é inútil para nós, gaste esse recurso para upar mais dano em suporte após atingir nvl5 + 2 buffs de ATK no guerreiro.
+
+Uma vez que alcançaste todos objetivos de exploração possíveis até o pedaço de mapa que tu estás, aguarde o horário do Boss ser liberado… Com o Boss liberado, use seu time B para atacar todas etapas da guarda (os jogadores que vão atacar a guarda serão prédifinidos nos grupos de WPP);
+
+Após o Boss com toda guarda destruída, teremos diferentes estratégias:
+
+Orfeu – 12 Energia/atk – 5 guardas: Receberá apenas ataques do time B do 6º ao 40º integrante da guilda. Top 10 da guilda economizará energia dos 10 cavaleiros até o próximo boss. CUIDADO: cavaleiros na posição 4 toma stun permanente do Orfeu como é informado no vídeo do Chapeleta (21m17s) posicione sua comp de maneira adequada a esse risco;
+
+Rhamanthys – 24 Energia/atk – 10 guardas: Top 10 da guilda continuará economizando energia. Mas, do 11º ao 40º, já teremos ataques do time A da galera. Pois daqui em diante o Tremy (já já veremos a comp do time A recomendada) já será necessidade para jogar contra todos os boss;
+
+Pandora – 36 Energia/atk – 15 guardas: mesma estratégia do boss anterior;
+
+Thanatos + Hypnos – 48 Energia/atk – 20 guardas: Todos atacam com time A, time B, até zerar as energias e começar a resetar os cavaleiros do time A para invocá-los em slots vazios com 60 de energia e atacar de novo. E, até zerar o evento, realizar ataques com todos os times possíveis de quem tiver energia… 40 players fazendo isso o somatório de ataques ruins ainda faz muita diferença, acreditem no sucesso e façam a sua parte.
+
+Recomendação de TIME A (caso vocês tenham todos upados):
+  1 – Seiya Divino (artefato Espada Dourada) (arayas de dano secundárias)
+  2 – Aiolia Divino (artefato Espada Dourada) (melhores arayas de dano)
+  3 – Aiolia normal (artefato Espada Dourada) (arayas de dano terciárias)
+  4 – Shun Divino (artefato Espada Dourada)
+  5 – Dohko Velho (artefato Espada Dourada)
+  
+  Obs 1: Tanto Aiolia Divino, quanto Dohko Velho, PRECISAM ESTAR C9!!!!! Se não, são 100% inúteis.
+  Obs 2: Substitutos: Se não tiver 1 cavaleiro da comp recomendada, traga Shun de Virgem. Se não tiver 2 cavaleiros, além do Shun de Virgem traga Shina. Se não tiver 3, não era nem para você estar jogando o Relíquias.
+
+
+
+Recomendações de TIME B/C (caso vocês tenham todos upados):
+  1 – Ikki Divino
+  2 – Afrodite
+  3 – Sirius
+  4 – Suikyo
+  5 – Krishna
+  
+  1 – Ikki Divino
+  2 – Aiolos
+  3 – Mu
+  4 – Hyoga Divino
+  5 – Krishna
+  
+  1 – Ikki Divino
+  2 – Suikyo
+  3 – Mu
+  4 – Poseidon
+  5 – Krishna

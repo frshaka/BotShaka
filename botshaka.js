@@ -12,6 +12,8 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 const schedule = require('node-schedule');
+const fs = require('fs');
+const path = require('path');
 
 function delay(t, v) {
   return new Promise(function(resolve) { 
@@ -441,9 +443,9 @@ https://instagram.com/saintseiyaloj.global?igshid=MzRlODBiNWFlZA==`;
 
 
   //ChatGPT
-  if (comando === "!gpt") {
+ /* if (comando === "!gpt") {
     let mensagem = msg.body.replace(acao[0], "").trim();
-    //const apiKey = '';
+    const apiKey = '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';
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
     const chatGPTRequest = async (message) => {
@@ -469,9 +471,103 @@ https://instagram.com/saintseiyaloj.global?igshid=MzRlODBiNWFlZA==`;
     };
 
     chatGPTRequest(mensagem);
+  }*/
+});
+
+   // const apiKey = '';
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
+
+//GPT MANTENDO CONTEXTO
+
+// Objeto para armazenar o histórico de mensagens de cada usuário
+const userMessages = {};
+
+const GPTRequest = async (userId, message) => {
+  try {
+    // Se não houver histórico de mensagens para o usuário, inicialize com uma mensagem de sistema
+    if (!userMessages[userId]) {
+      userMessages[userId] = [{ role: 'system', content: 'Você é um assistente útil.' }];
+    }
+
+    // Adicione a nova mensagem do usuário ao histórico
+    userMessages[userId].push({ role: 'user', content: message });
+
+    const response = await axios.post(
+      apiUrl,
+      {
+        model: 'gpt-4o',
+        messages: userMessages[userId]
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+      }
+    );
+
+    const reply = response.data.choices[0].message.content;
+
+    // Adicione a resposta do assistente ao histórico
+    userMessages[userId].push({ role: 'assistant', content: reply });
+
+    return reply;
+  } catch (error) {
+    console.error('Erro ao chamar a API do ChatGPT:', error);
+  }
+};
+
+client.on('message', async (msg) => {
+  if (msg.body.startsWith('!chat')) {
+    const mensagem = msg.body.replace('!chat', '').trim();
+
+    // Obtém a resposta do ChatGPT e envia de volta para o usuário
+    const reply = await GPTRequest(msg.from, mensagem);
+    client.sendMessage(msg.from, reply);
   }
 });
 
+
+const recommendationsFilePath = path.join(__dirname, 'recomendationsEneas.txt');
+const recommendationsText = fs.readFileSync(recommendationsFilePath, 'utf8');
+
+const chatGPTRequest = async (message) => {
+  try {
+    const messages = [
+      { role: 'system', content: 'Você é um assistente que responde com base nas seguintes recomendações de um jogo de celular, falando de maneira bem informal e pode usar palavrões e gírias.' },
+      { role: 'system', content: `Texto de Recomendações: ${recommendationsText}` },
+      { role: 'user', content: `Baseando-se exclusivamente nas recomendações fornecidas, responda à seguinte pergunta: ${message}` },
+      { role: 'user', content: `` }
+    ];
+
+    const response = await axios.post(
+      apiUrl,
+      {
+        model: 'gpt-4o',
+        messages: messages
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+      }
+    );
+
+    const reply = response.data.choices[0].message.content;
+    return reply;
+  } catch (error) {
+    console.error('Erro ao chamar a API do ChatGPT:', error.response ? error.response.data : error.message);
+  }
+};
+
+client.on('message', async (msg) => {
+  if (msg.body.startsWith('!gpt')) {
+    const mensagem = msg.body.replace('!gpt', '').trim();
+    const reply = await chatGPTRequest(mensagem);
+    client.sendMessage(msg.from, reply);
+  }
+});
 
 
 
