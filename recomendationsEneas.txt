@@ -239,3 +239,63 @@ Recomendações de TIME B/C (caso vocês tenham todos upados):
   3 – Mu
   4 – Poseidon
   5 – Krishna
+
+
+
+
+GvG
+
+Vocês são meus amores, mas juro que me tiram do sério quando ignoram as orientações da guilda. Sempre vejam as descrições dos grupos de whatsapp onde vocês se encontram. Há 99% de chances da sua dúvida estar resolvida em um dos links lá (que podem desde chegar a esse site ou o link do nosso drive, ou o ID da guilda, enfim…).
+
+Nós sempre segmentamos 1 grupo no whatsapp específico para a Guerra Santa. Lá avisaremos a orientação daquele dia de guerra (se é “ATK ESPELHO”, “ATK GRUPOS” ou “ATK LIVRE”) tanto via mensagem quanto alterando o título do grupo (para melhor visibilidade), então vamos às definições de cada orientação abaixo:
+
+ATK ESPELHO: Situações onde, como oponente, pegamos guild com poder médio MUITO ABAIXO do nosso poder médio. A meta é fazer 60×0. Cada integrante pode fazer ataque espelho (o 1º do nosso ataca o 1º do oponente, 2º com o 2º, e assim por diante) pois o risco do nosso integrante não fazer 3 pontos é ínfimo, para não dizer nulo. Exemplo de oponentes: Cosmorasil, LIBRA, PHOENIX, CDZBR, MILANESA, SANTUÁRIOBR, DESTERRADOS, SAINTSMEX, KINGS, DRACORE, MonteOlimpo, TheGlorY, etc;
+
+ATK GRUPOS: Situações onde, como oponente, pegamos guild com poder médio levemente abaixo do nosso poder médio. A meta é fazer 60x??. Ordenamos os ataques por “linhas da grade do top20 escalado” e a ordem dos ataques rolam de baixo para cima. Ou seja: o grupo C (última e penúltima linha, do 14º ao 20º jogador) ataca primeiro entre 13h e 15h. Já o grupo B (2 linhas do meio, 7º ao 13º) ataca em seguida entre 15h e 17h. E o grupo A (2 linhas do topo, 1º ao 6º) ataca por último a partir das 17h e, às vezes, ainda com limitações e escolhas coordenadas de ataque;
+
+ATK LIVRE: Situações onde, como oponente, pegamos guild com poder médio MUITO ACIMA do nosso poder médio. A meta é fazer ??x60. Cada integrante se empenha em pontuar onde der da maneira que conseguir… Mas dê o seu melhor e tente tirar uma casquinha da guild grande. Não tem muito o que fazer Exemplo de oponentes: Asgard 1, Asgard 2, HellHeim 1, HellHeim 2 e Soul Society.
+
+Só para ficar CRISTALINO como é a segmentação de grupos…
+
+Grupo A (2 PRIMEIRAS linhas)
+
+Grupo B (2 linhas do MEIO)
+
+Grupo C (2 ÚLTIMAS linhas)
+
+
+Ataques
+
+Alguns counters situacionais (você vs oponente):
+
+Seiya Divino contra habilidades de abertura, em geral: Poseidon, Hypnos, Canon Marina, Camus A30, Deusa da Guerra C9, Seiya Sagitário, Ikki Divino¹ (depende), Afrodite² (depende), etc. Por conta da abertura “Duelo”, do Seiya, ele cancela qualquer efeito de habilidade de abertura do oponente;
+
+Seiya Divino contra habilidades de ciclo: Dohko Ancião, Aiolos, Mu, Asterion, etc. O Duelo, mais uma vez brilha, por cancelar o 1º ciclo ao longo de sua duração inicial. No caso do Dohko, atrapalha o primeiro ciclo de interrupção dele. No aiolos a flechada de stun, fora que o aiolos provavelmente vai morrer rapidinho;
+
+Ikki Divino contra DPS de alvo único (DPS = Damage Per Second, apelido famoso para personagens que são referências em executar os maiores danos da partida) ou ficar na posição 1: Seiya Divino³ (depende), Aiolos, etc, ou ficar na posição 1 para acumular, como tanker, o dano de 3 atacantes.
+
+Dohko Ancião, Mu, Shun Divino ou Deusa da Guerra contra Ikki Divino: apesar da intenção ser essa, muito cuidado pois são cavaleiros que não matarão o Ikki. Ou seja, tomarão MUITO DANO. Então precisarão das melhores Arayas de HP/DEF e, também, estarem com poder parelho ao do oponente. A intenção aqui é o básico do básico: deixar seus DPS focarem em acabar com todo o resto dos cavaleiros do oponente antes do Ikki porque não adianta nada matá-lo antes, ganhar dano do “Renascimento da Fênix” nesse meio tempo e matá-lo novamente em seguida.
+
+Aiolos contra habilidades de ciclo: Afrodite, Dohko, Mu. Pelo seu ciclo de stun;
+
+Deusa da Guerra contra crítico: Aiolos, Seiya Divino⁴ (depende), ou oponentes com comps com Asterion ou muito foco de crítico em seus DPS (Ikki Divino, geralmente). Sem a araya da Deusa, obviamente, para manter sua def. E, pelo amor da deusa do santuário, SEM o Shion Astral (o Shion Grande Mestre) na sua comp, infeliz… Pois ele já zera os críticos da partida com o PNA de ANCAP dele;
+
+Sirius contra controle: Aiolos, principalmente… Mas qualquer outra ameaça que resulte em stun ou algum outro efeito de controle, dentro da janela de 8s, o Sirius tem uma habilidade “Acionar” (Trigger) que reverte e dá um escudo igual ao do Charge Up para a vítima do controle;
+
+¹ Nunca recomendamos botar um DPS contra o Ikki às cegas pois sua morte precoce tende mais a atrapalhar do que ajudar, na maioria dos casos. Mas, podemos encontrar algumas situações onde espelhar especificamente o Seiya Divino no Ikki será importante para acabar com a abertura do Ikki (que anula o ATK nos primeiros 5 segundos da partida).
+
+² Só funciona se o seu Seiya tiver poder equivalente ou maior que o Afro. Se o Afro for mais forte e C9, ele, provavelmente, matará seu Seiya.
+
+³ Lembre-se que, fazendo isso, você perde a habilidade inicial do Ikki. Mas, no geral, é um dos melhores blocks a se fazer.
+
+⁴ Mas NUNCA, NUNCA, NUNCA espelhada no Seiya, pois aí a abertura “Duelo” dele inutiliza o C9 dela. Ela só precisa estar na comp em qualquer outro canto.
+
+Nós temos o costume de pedir para um amigo da guild replicar a comp do oponente na defesa do “Corrida por Pontos” e assim fazermos um teste maroto.
+
+Replicamos os cavaleiros e estigma utilizados pelo alvo da GvG, apenas… Sabemos que Araya faz uma diferença absurda, mas não dá para termos paciência de replicar detalhe a detalhe. Fora que outros fatores como Estátuas, Zona de Provação e Roda do Destino não terá como replicar, pois são investimentos irreversíveis, então paciência. O principal no teste aqui é verificar o comportamento de ambas comps e ter mais segurança com algumas escolhas.
+
+Mas não é porque você ganhou 10 vezes seguidas do amiguinho de comp replicada que você conseguirá chegar no oponente e fazer 3*. Preste atenção nas Arayas, estigmas, nível “escondido” das armaduras e os atributos.
+
+Então, se preocupem em ter o máximo de amizades com os integrantes da guilda o quanto antes. Para podermos combinar essa suruba e, se organizarmos direitinho, termos teste disponível para todos.
+
+Se atentem, inclusive, em olhar nossa planilha de contatos, para saber quem é quem e pedir a réplica de defesa no inbox do WPP.

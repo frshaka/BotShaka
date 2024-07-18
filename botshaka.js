@@ -474,7 +474,7 @@ https://instagram.com/saintseiyaloj.global?igshid=MzRlODBiNWFlZA==`;
   }*/
 });
 
-   // const apiKey = '';
+    const apiKey = '';
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
 
 //GPT MANTENDO CONTEXTO
