@@ -5,7 +5,7 @@ module.exports = (client, groupId, alertCloseTimes) => {
     const sendAlertMessage = async (time) => {
         try {
             const chat = await client.getChatById(groupId);
-            if (chat.isGroup) {
+            if (chat.isGroup && chat.name.includes('GRUPO')) {
                 const participants = chat.participants;
                 let mensagem = '';
 
