@@ -1,9 +1,9 @@
-const axios = require('axios');
+/*const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
-const apiKey = '';
+const apiKey = 'gO7E1M6e0qGTpR9ichSkT3BlbkFJnd7r8fchKKpmvaLq70Ox';
 
 const recommendationsFilePath = path.join(__dirname, '../gptFunctions/recomendations/recomendationsEneas.txt');
 const recommendationsText = fs.readFileSync(recommendationsFilePath, 'utf8');
@@ -49,3 +49,4 @@ module.exports = (client) => {
     }
   });
 };
+*/

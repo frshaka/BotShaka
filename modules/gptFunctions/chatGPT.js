@@ -1,7 +1,7 @@
 const axios = require('axios');
 
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
-const apiKey = '';
+const apiKey = 'gO7E1M6e0qGTpR9ichSkT3BlbkFJnd7r8fchKKpmvaLq70Ox';
 
 // Objeto para armazenar o histórico de mensagens de cada usuário
 const userMessages = {};

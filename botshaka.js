@@ -29,6 +29,7 @@ const contact = require('./modules/utils/contact.js');
 const ping = require('./modules/utils/ping.js');
 
 
+
 //GPT Functions Import
 const gptEneas = require('./modules/gptFunctions/gptEneas.js');
 const chatGPT = require('./modules/gptFunctions/chatGPT.js');
@@ -223,10 +224,10 @@ client.on('ready', async () => {
   guildInfo(client);
 
   // Chama a função para interagir com o ChatGPT com contexto Eneas
-  gptEneas(client);
+  //gptEneas(client);
 
   // Chama a função para interagir com o ChatGPT
-  chatGPT(client);
+  //chatGPT(client);
 
   // Chama a função de ajuda com o uso do Bot
   help(client);
@@ -237,8 +238,63 @@ client.on('ready', async () => {
   // Chama a função de PING
   ping(client);
 
-
 });
+
+
+const apiUrl = 'https://api.openai.com/v1/chat/completions';
+const apiKey = 'sk-proj-4kL6glBZCaMmJvZ8qGatT3BlbkFJ3voUusLaZaQ9iIe3W498';
+
+const recommendationsFilePath = path.join(__dirname, 'recomendationsEneas.txt');
+const recommendationsText = fs.readFileSync(recommendationsFilePath, 'utf8');
+
+// Função para truncar o texto das recomendações
+const truncateText = (text, maxLength) => {
+  if (text.length > maxLength) {
+    return text.slice(0, maxLength) + '...';
+  }
+  return text;
+};
+
+// Definimos um limite de 4000 caracteres para garantir que não exceda o limite de tokens
+//const truncatedRecommendationsText = truncateText(recommendationsText, 4000);
+
+const chatGPTRequest = async (message) => {
+  try {
+    const messages = [
+      { role: 'system', content: 'Você é um assistente que responde com base nas seguintes recomendações de um jogo de celular, falando de maneira bem informal e pode usar palavrões e gírias.' },
+      { role: 'system', content: `Texto de Recomendações: ${recommendationsText}` }, //${truncatedRecommendationsText}
+      { role: 'user', content: `Baseando-se exclusivamente nas recomendações fornecidas, responda à seguinte pergunta: ${message}` },
+    ];
+
+    const response = await axios.post(
+      apiUrl,
+      {
+        model: 'gpt-4o',
+        messages: messages
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`,
+        },
+      }
+    );
+
+    const reply = response.data.choices[0].message.content;
+    return reply;
+  } catch (error) {
+    console.error('Erro ao chamar a API do ChatGPT:', error.response ? error.response.data : error.message);
+  }
+};
+
+client.on('message', async (msg) => {
+  if (msg.body.startsWith('!gpt')) {
+    const mensagem = msg.body.replace('!gpt', '').trim();
+    const reply = await chatGPTRequest(mensagem);
+    client.sendMessage(msg.from, reply);
+  }
+});
+
 
 
 server.listen(port, function() {
