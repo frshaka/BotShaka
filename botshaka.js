@@ -14,6 +14,7 @@ const io = socketIO(server);
 const schedule = require('node-schedule');
 const fs = require('fs');
 const path = require('path');
+const { google } = require('googleapis');
 
 // Function Groups Import
 const changeGroupName = require('./modules/groups/changeGroupName.js');
@@ -27,8 +28,8 @@ const cleanMessages = require('./modules/utils/cleanMessages.js');
 const help = require('./modules/utils/help.js');
 const contact = require('./modules/utils/contact.js');
 const ping = require('./modules/utils/ping.js');
-
-
+const addPlayer = require('./modules/utils/addplayers');
+const saveImageToDrive = require('./modules/utils/saveImageToDrive');
 
 //GPT Functions Import
 const gptEneas = require('./modules/gptFunctions/gptEneas.js');
@@ -36,8 +37,6 @@ const chatGPT = require('./modules/gptFunctions/chatGPT.js');
 
 //General Messages Import
 const guildInfo = require('./modules/messages/guildInfo.js');
-
-
 
 function delay(t, v) {
   return new Promise(function(resolve) { 
@@ -47,10 +46,10 @@ function delay(t, v) {
 
 app.use(express.json());
 app.use(express.urlencoded({
-extended: true
+  extended: true
 }));
 app.use(fileUpload({
-debug: false
+  debug: false
 }));
 app.use("/", express.static(__dirname + "/"))
 
@@ -70,7 +69,7 @@ const client = new Client({
       '--disable-accelerated-2d-canvas',
       '--no-first-run',
       '--no-zygote',
-      '--single-process', // <- this one doesn't works in Windows
+      '--single-process', // <- this one doesn't work in Windows
       '--disable-gpu'
     ] }
 });
@@ -81,121 +80,102 @@ io.on('connection', function(socket) {
   socket.emit('message', 'BotShaka - Iniciado');
   socket.emit('qr', './loading.svg');
 
-client.on('qr', (qr) => {
+  client.on('qr', (qr) => {
     console.log('QR RECEIVED', qr);
     qrcode.toDataURL(qr, (err, url) => {
       socket.emit('qr', url);
       socket.emit('message', '© BotShaka QRCode recebido, aponte a câmera  seu celular!');
     });
-});
+  });
 
-client.on('ready', () => {
+  client.on('ready', () => {
     socket.emit('ready', 'BotShaka Dispositivo pronto!');
     socket.emit('message', 'BotShaka Dispositivo pronto!');
-    socket.emit('qr', './check.svg')	
+    socket.emit('qr', './check.svg');
     console.log('BotShaka Dispositivo pronto');
-});
+  });
 
-client.on('authenticated', () => {
+  client.on('authenticated', () => {
     socket.emit('authenticated', 'BotShaka Autenticado!');
     socket.emit('message', 'BotShaka Autenticado!');
     console.log('BotShaka Autenticado');
-});
-
-client.on('auth_failure', function() {
-    socket.emit('message', 'BotShaka Falha na autenticação, reiniciando...');
-    console.error('BotShaka Falha na autenticação');
-});
-
-client.on('change_state', state => {
-  console.log('BotShaka Status de conexão: ', state );
-});
-
-client.on('disconnected', (reason) => {
-  socket.emit('message', 'BotShaka Cliente desconectado!');
-  console.log('BotShaka Cliente desconectado', reason);
-  client.initialize();
-});
-});
-
-// Send message
-app.post('/shaka-message', [
-  body('number').notEmpty(),
-  body('message').notEmpty(),
-], async (req, res) => {
-  const errors = validationResult(req).formatWith(({
-    msg
-  }) => {
-    return msg;
   });
 
-  if (!errors.isEmpty()) {
-    return res.status(422).json({
-      status: false,
-      message: errors.mapped()
-    });
-  }
+  client.on('auth_failure', function() {
+    socket.emit('message', 'BotShaka Falha na autenticação, reiniciando...');
+    console.error('BotShaka Falha na autenticação');
+  });
 
-  const number = req.body.number;
-  const numberDDI = number.substr(0, 2);
-  const numberDDD = number.substr(2, 2);
-  const numberUser = number.substr(-8, 8);
-  const message = req.body.message;
+  client.on('change_state', state => {
+    console.log('BotShaka Status de conexão: ', state );
+  });
 
-  if (numberDDI !== "55") {
-    const numberShaka = number + "@c.us";
-    client.sendMessage(numberShaka, message).then(response => {
-    res.status(200).json({
-      status: true,
-      message: 'BotShaka Mensagem enviada',
-      response: response
-    });
-    }).catch(err => {
-    res.status(500).json({
-      status: false,
-      message: 'BotShaka Mensagem não enviada',
-      response: err.text
-    });
-    });
-  }
-  else if (numberDDI === "55" && parseInt(numberDDD) <= 30) {
-    const numberShaka = "55" + numberDDD + "9" + numberUser + "@c.us";
-    client.sendMessage(numberShaka, message).then(response => {
-    res.status(200).json({
-      status: true,
-      message: 'BotShaka Mensagem enviada',
-      response: response
-    });
-    }).catch(err => {
-    res.status(500).json({
-      status: false,
-      message: 'BotShaka Mensagem não enviada',
-      response: err.text
-    });
-    });
-  }
-  else if (numberDDI === "55" && parseInt(numberDDD) > 30) {
-    const numberShaka = "55" + numberDDD + numberUser + "@c.us";
-    client.sendMessage(numberShaka, message).then(response => {
-    res.status(200).json({
-      status: true,
-      message: 'BotShaka Mensagem enviada',
-      response: response
-    });
-    }).catch(err => {
-    res.status(500).json({
-      status: false,
-      message: 'BotShaka Mensagem não enviada',
-      response: err.text
-    });
-    });
-  }
+  client.on('disconnected', (reason) => {
+    socket.emit('message', 'BotShaka Cliente desconectado!');
+    console.log('BotShaka Cliente desconectado', reason);
+    client.initialize();
+  });
 });
+
+// Função para criar subdiretório no Google Drive
+async function createSubdirectory(auth, parentFolderId, subdirectoryName) {
+  const driveService = google.drive({ version: 'v3', auth });
+
+  // Verificar se o subdiretório já existe
+  const existingFolderResponse = await driveService.files.list({
+    q: `'${parentFolderId}' in parents and name='${subdirectoryName}' and mimeType='application/vnd.google-apps.folder'`,
+    fields: 'files(id, name)',
+    spaces: 'drive'
+  });
+
+  if (existingFolderResponse.data.files.length > 0) {
+    // Subdiretório já existe
+    console.log('Subdiretório já existe:', existingFolderResponse.data.files[0].id);
+    return existingFolderResponse.data.files[0].id;
+  } else {
+    // Criar novo subdiretório
+    const fileMetadata = {
+      'name': subdirectoryName,
+      'mimeType': 'application/vnd.google-apps.folder',
+      'parents': [parentFolderId]
+    };
+
+    const folder = await driveService.files.create({
+      resource: fileMetadata,
+      fields: 'id'
+    });
+
+    console.log('Subdiretório criado com sucesso:', folder.data.id);
+    return folder.data.id;
+  }
+}
+
+// Função para fazer upload no Google Drive
+async function uploadToGoogleDrive(auth, fileName, filePath, parentFolderId) {
+  const driveService = google.drive({ version: 'v3', auth });
+
+  const fileMetadata = {
+    'name': fileName,
+    'parents': [parentFolderId]
+  };
+
+  const media = {
+    mimeType: mime.lookup(filePath),
+    body: fs.createReadStream(filePath)
+  };
+
+  const response = await driveService.files.create({
+    resource: fileMetadata,
+    media: media,
+    fields: 'id'
+  });
+
+  return response.data;
+}
 
 
 //EXECUÇÃO DAS AÇÕES EXTERNAS
 
-// ALERTAS AUTOMÁTICOS NO GRUPO DA GVG
 const groupId = '120363198603699526@g.us'; // ID do grupo que você quer monitorar
 const alertCloseTimes = ['13:00', '14:30', '15:00', '16:30', '17:00']; // Horários de alerta para Ataque de Grupo
 const groupNameChangeTime = '22:30'; // Horário para alterar o nome do grupo
@@ -238,8 +218,13 @@ client.on('ready', async () => {
   // Chama a função de PING
   ping(client);
 
-});
+  // Chama a função para adicionar jogador
+  addPlayer(client);
 
+  // Chama a função para salvar imagens no Google Drive
+  saveImageToDrive(client);
+
+});
 
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
 const apiKey = 'sk-proj-4kL6glBZCaMmJvZ8qGatT3BlbkFJ3voUusLaZaQ9iIe3W498';
@@ -295,7 +280,6 @@ client.on('message', async (msg) => {
   }
 });
 
-
-
 server.listen(port, function() {
+  console.log(`BotShaka está rodando na porta ${port}`);
 });
