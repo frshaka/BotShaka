@@ -29,6 +29,10 @@ const help = require('./modules/utils/help.js');
 const contact = require('./modules/utils/contact.js');
 const ping = require('./modules/utils/ping.js');
 const addPlayer = require('./modules/utils/addplayers');
+const inativaPlayerID = require('./modules/utils/inativaPlayerID');
+const inativaPlayerTel = require('./modules/utils/inativaPlayerTel');
+const ativaPlayerID = require('./modules/utils/ativaPlayerID');
+const ativaPlayerTel = require('./modules/utils/ativaPlayerTel');
 const saveImageToDrive = require('./modules/utils/saveImageToDrive');
 
 //GPT Functions Import
@@ -223,6 +227,18 @@ client.on('ready', async () => {
 
   // Chama a função para salvar imagens no Google Drive
   saveImageToDrive(client);
+
+  // Chama a função para inativar um jogador pelo ID
+  inativaPlayerID(client);
+
+  // Chama a função para inativar um jogador pelo Telefone
+  inativaPlayerTel(client);
+
+  // Chama a função para ativar um jogador pelo Telefone
+  ativaPlayerTel(client);
+
+  // Chama a função para ativar um jogador pelo Telefone
+  ativaPlayerID(client);
 
 });
 

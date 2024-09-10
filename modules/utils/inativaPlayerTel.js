@@ -5,7 +5,7 @@ module.exports = (client) => {
         if (msg.body.startsWith('!inativatel')) {
             const args = msg.body.split(' ').slice(1);
             if (args.length < 1) {
-                client.sendMessage(msg.from, 'Erro: Comando inválido. Use !inactivateplayer <ID>');
+                client.sendMessage(msg.from, 'Erro: Comando inválido. Use !inativaplayer <ID>');
             } else {
                 const [telefone] = args;
 
