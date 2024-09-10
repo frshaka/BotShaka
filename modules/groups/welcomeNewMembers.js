@@ -27,7 +27,7 @@ Drive: https://drive.google.com/drive/folders/1we42S3Q6wRFrI0hJfttt04lkRzDo4Unx?
 Finalidade dos grupos:
 * Deepweb: Nenhuma;
 * GvG: Organização da temporada de GvG;
-* GvG Arayashiki: Organização da temporada de GvG da guild Arayashiki;
+* GvG SS: Organização da temporada de GvG da guild Soul Society;
 * Alpha/Bravo: Eram para organização da temporada de Relics. Mas a próxima temporada teremos uma organização mais elaborada.
       
 
