@@ -1,7 +1,6 @@
 const { google } = require('googleapis');
 const mime = require('mime-types');
 const fs = require('fs');
-const path = require('path');
 
 // Função para criar subdiretório no Google Drive
 async function createSubdirectory(auth, parentFolderId, subdirectoryName) {

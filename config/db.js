@@ -65,7 +65,49 @@ async function getPlayerByPhone(telefone) {
   }
 }
 
+// Função para inativar um jogador pelo ID
+async function inativarPlayerID(id) {
+  const query = `UPDATE players SET ativo = 'N' WHERE id = $1 RETURNING *`;
+  const values = [id];
+
+  try {
+    const res = await pool.query(query, values);
+    if (res.rowCount > 0) {
+      console.log('Jogador inativado:', res.rows[0]);
+      return res.rows[0];
+    } else {
+      console.log('Nenhum jogador encontrado com o ID fornecido.');
+      return null;
+    }
+  } catch (err) {
+    console.error('Erro ao inativar jogador:', err.stack);
+    return null;
+  }
+}
+
+// Função para inativar um jogador pelo Telefone
+async function inativarPlayerTelefone(id) {
+  const query = `UPDATE players SET ativo = 'N' WHERE telefone = $1 RETURNING *`;
+  const values = [telefone];
+
+  try {
+    const res = await pool.query(query, values);
+    if (res.rowCount > 0) {
+      console.log('Jogador inativado:', res.rows[0]);
+      return res.rows[0];
+    } else {
+      console.log('Nenhum jogador encontrado com o Telefone fornecido.');
+      return null;
+    }
+  } catch (err) {
+    console.error('Erro ao inativar jogador:', err.stack);
+    return null;
+  }
+}
+
 module.exports = {
   addPlayer,
   getPlayerByPhone,
+  inativarPlayerID,
+  inativarPlayerTelefone,
 };
