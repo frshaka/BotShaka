@@ -19,11 +19,10 @@ Comunidade: https://chat.whatsapp.com/HcuJY3SX6pR6zSHLwQIDKn
       
 PDF:  https://rb.gy/i3fgtl
       
-Contatos: https://docs.google.com/spreadsheets/d/1tfMC0wnL6h8YPiEFJQjnJdzNRtdWOYWAGZBbgjqyODk/edit?usp=sharing
+Contatos: https://docs.google.com/spreadsheets/d/1tGi5dqonfvdZarWHwLgNq8fAmUBH9Ce6SCrYVeaAMfU/edit?usp=sharing
       
-Drive: https://drive.google.com/drive/folders/1gpAhAvgykgUQa6PWMaoOhCMevte0BxeD?usp=sharing
+Drive: https://drive.google.com/drive/folders/1we42S3Q6wRFrI0hJfttt04lkRzDo4Unx?usp=sharing
       
-Drive dos prints da sua conta: https://drive.google.com/drive/folders/1iivltFz3vx4pymO5bvqs-qntlSdIRUaJ?usp=drive_link
       
 Finalidade dos grupos:
 * Deepweb: Nenhuma;
@@ -36,7 +35,6 @@ Se tiver alguma dúvida manda um salve pra qualquer membro da Adm da guilda que 
 
 Contatos de suporte da EneasRedpill:
 admin@eneasredpill.com
-+552198138-9149
       
 Contatos de suporte da Wanda no SSLOJ:
 seiyaloj@gmail.com
