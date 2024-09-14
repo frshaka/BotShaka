@@ -3,3 +3,5 @@ node_modules
 .wwebjs_cache
 .env
 /config/credentials.json
+Manual.txt
+/docs

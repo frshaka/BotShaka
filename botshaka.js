@@ -121,7 +121,7 @@ io.on('connection', function(socket) {
   });
 });
 
-// Função para criar subdiretório no Google Drive
+/*// Função para criar subdiretório no Google Drive
 async function createSubdirectory(auth, parentFolderId, subdirectoryName) {
   const driveService = google.drive({ version: 'v3', auth });
 
@@ -175,7 +175,7 @@ async function uploadToGoogleDrive(auth, fileName, filePath, parentFolderId) {
   });
 
   return response.data;
-}
+}*/
 
 
 //EXECUÇÃO DAS AÇÕES EXTERNAS
@@ -229,17 +229,16 @@ client.on('ready', async () => {
   saveImageToDrive(client);
 
   // Chama a função para inativar um jogador pelo ID
-  inativaPlayerID(client);
+  deactivatePlayerByID(client);
 
   // Chama a função para inativar um jogador pelo Telefone
-  inativaPlayerTel(client);
+  deactivatePlayerByPhone(client);
 
   // Chama a função para ativar um jogador pelo Telefone
-  ativaPlayerTel(client);
-
+  activatePlayerByID(client);
+  
   // Chama a função para ativar um jogador pelo Telefone
-  ativaPlayerID(client);
-
+  activatePlayerByPhone(client);
 });
 
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
@@ -270,7 +269,7 @@ const chatGPTRequest = async (message) => {
     const response = await axios.post(
       apiUrl,
       {
-        model: 'gpt-4o',
+        model: 'chatgpt-4o-latest',
         messages: messages
       },
       {

@@ -1,155 +1,127 @@
 const { Pool } = require('pg');
 
-// Configurações da conexão com o banco de dados PostgreSQL
+// Configurações da conexão inicial com o banco de dados padrão 'postgres'
+const poolAdmin = new Pool({
+  user: 'postgres',            // Substitua pelo seu usuário do PostgreSQL
+  host: 'localhost',           // Host do banco de dados
+  database: 'postgres',        // Banco de dados padrão onde você pode criar outros bancos
+  password: 'postgres',        // Senha do usuário
+  port: 5432,                  // Porta padrão do PostgreSQL
+});
+
+// Função para verificar e criar o banco de dados se não existir
+async function createDatabaseIfNotExists() {
+  const checkDbQuery = `SELECT 1 FROM pg_database WHERE datname = 'eneasredpill'`;
+  const createDbQuery = `CREATE DATABASE eneasredpill`;
+
+  try {
+    const res = await poolAdmin.query(checkDbQuery);
+    if (res.rowCount === 0) {
+      console.log("Banco de dados 'eneasredpill' não encontrado. Criando...");
+      await poolAdmin.query(createDbQuery);
+      console.log("Banco de dados 'eneasredpill' criado com sucesso.");
+    } else {
+      console.log("Banco de dados 'eneasredpill' já existe.");
+    }
+  } catch (err) {
+    console.error('Erro ao verificar/criar o banco de dados:', err.stack);
+  } finally {
+    poolAdmin.end(); // Fecha a conexão com o banco de dados postgres
+  }
+}
+
+// Conexão ao banco de dados 'eneasredpill'
 const pool = new Pool({
   user: 'postgres',            // Substitua pelo seu usuário do PostgreSQL
   host: 'localhost',           // Host do banco de dados
-  database: 'eneasredpill',        // Nome do banco de dados
+  database: 'eneasredpill',    // Nome do banco de dados a ser usado
   password: 'postgres',        // Senha do usuário
-  port: 5432,                  // Porta padrão do PostgreSQLß
+  port: 5432,                  // Porta padrão do PostgreSQL
 });
 
-// Conectar ao banco de dados
-pool.connect((err) => {
-  if (err) {
-    console.error('Erro ao conectar ao banco de dados PostgreSQL:', err.stack);
-  } else {
-    console.log('Conectado ao banco de dados PostgreSQL.');
-  }
-});
+// Função assíncrona para criar tabelas em ordem
+async function createTables() {
+  // Criar tabela 'erp_players' se não existir
+  const createPlayersTableQuery = `
+    CREATE TABLE IF NOT EXISTS erp_players (
+      id UUID PRIMARY KEY,
+      nick VARCHAR(50) NOT NULL,
+      name VARCHAR(100) NOT NULL,
+      phone VARCHAR(15) UNIQUE NOT NULL,
+      is_active BOOLEAN DEFAULT TRUE,
+      id_adm BOOLEAN DEFAULT FALSE
+    );
+  `;
 
-// Criar tabela 'players' se não existir
-const createTableQuery = `
-  CREATE TABLE IF NOT EXISTS players (
-    id INTEGER PRIMARY KEY,  -- ou INTEGER se o ID for numérico
-    nick VARCHAR(50) NOT NULL,
-    nome VARCHAR(100) NOT NULL,
-    telefone VARCHAR(15) UNIQUE NOT NULL
-  );
-`;
+  const createGvgTableQuery = `
+    CREATE TABLE IF NOT EXISTS erp_gvg (
+      id UUID PRIMARY KEY,
+      fk_id_erp_players UUID REFERENCES erp_players(id) ON DELETE CASCADE,
+      is_gvg BOOLEAN DEFAULT FALSE,
+      fixed BOOLEAN DEFAULT FALSE,
+      rotation BOOLEAN DEFAULT FALSE
+    );
+  `;
 
-pool.query(createTableQuery, (err, res) => {
-  if (err) {
-    console.error('Erro ao criar a tabela players:', err.stack);
-  } else {
-    console.log('Tabela players criada com sucesso ou já existe.');
-  }
-});
+  const createRelicsTeamTableQuery = `
+    CREATE TABLE IF NOT EXISTS erp_relics_team (
+      id UUID PRIMARY KEY,
+      team VARCHAR(255) NOT NULL
+    );
+  `;
 
-// Função para adicionar um novo jogador com ID fornecido externamente
-async function addPlayer(id, nick, nome, telefone) {
-  const query = `INSERT INTO players (id, nick, nome, telefone) VALUES ($1, $2, $3, $4) RETURNING *`;
-  const values = [id, nick, nome, telefone];
+  const createRelicsPlayersTeamTableQuery = `
+    CREATE TABLE IF NOT EXISTS erp_relics_players_team (
+      id UUID PRIMARY KEY,
+      fk_id_erp_relics_team UUID REFERENCES erp_relics_team(id) ON DELETE CASCADE,
+      fk_id_erp_players UUID REFERENCES erp_players(id) ON DELETE CASCADE
+    );
+  `;
+
+  const createRelicsDmgTableQuery = `
+    CREATE TABLE IF NOT EXISTS erp_relics_dmg (
+      id UUID PRIMARY KEY,
+      fk_id_erp_players UUID REFERENCES erp_players(id) ON DELETE CASCADE,
+      fk_id_erp_relics_players_team UUID REFERENCES erp_relics_players_team(id) ON DELETE CASCADE,
+      session VARCHAR(255) NOT NULL,
+      boss VARCHAR(255) NOT NULL,
+      damage VARCHAR(50) NOT NULL
+    );
+  `;
 
   try {
-    const res = await pool.query(query, values);
-    console.log('Jogador adicionado:', res.rows[0]);
-    return res.rows[0]; // Retorna o jogador adicionado
+    console.log('Criando tabela erp_players...');
+    await pool.query(createPlayersTableQuery);
+    console.log('Tabela erp_players criada ou já existente.');
+
+    console.log('Criando tabela erp_gvg...');
+    await pool.query(createGvgTableQuery);
+    console.log('Tabela erp_gvg criada ou já existente.');
+
+    console.log('Criando tabela erp_relics_team...');
+    await pool.query(createRelicsTeamTableQuery);
+    console.log('Tabela erp_relics_team criada ou já existente.');
+
+    console.log('Criando tabela erp_relics_players_team...');
+    await pool.query(createRelicsPlayersTeamTableQuery);
+    console.log('Tabela erp_relics_players_team criada ou já existente.');
+
+    console.log('Criando tabela erp_relics_dmg...');
+    await pool.query(createRelicsDmgTableQuery);
+    console.log('Tabela erp_relics_dmg criada ou já existente.');
   } catch (err) {
-    console.error('Erro ao adicionar jogador:', err.stack);
-    return null; // Retorna null em caso de erro
+    console.error('Erro ao criar tabelas:', err.stack);
   }
 }
 
-// Função para verificar se o jogador existe
-async function getPlayerByPhone(telefone) {
-  const query = `SELECT * FROM players WHERE telefone = $1`;
-  const values = [telefone];
-
-  try {
-    const res = await pool.query(query, values);
-    return res.rows[0];
-  } catch (err) {
-    console.error('Erro ao buscar jogador por telefone:', err.stack);
-    return null;
-  }
+// Função para inicializar o banco de dados e as tabelas
+async function initializeDatabase() {
+  await createDatabaseIfNotExists(); // Certifique-se de que o banco foi criado
+  await createTables();              // Crie as tabelas em sequência
 }
 
-// Função para inativar um jogador pelo ID
-async function inativarPlayerID(id) {
-  const query = `UPDATE players SET ativo = 'N' WHERE id = $1 RETURNING *`;
-  const values = [id];
-
-  try {
-    const res = await pool.query(query, values);
-    if (res.rowCount > 0) {
-      console.log('Jogador inativado:', res.rows[0]);
-      return res.rows[0];
-    } else {
-      console.log('Nenhum jogador encontrado com o ID fornecido.');
-      return null;
-    }
-  } catch (err) {
-    console.error('Erro ao inativar jogador:', err.stack);
-    return null;
-  }
-}
-
-// Função para inativar um jogador pelo Telefone
-async function inativarPlayerTelefone(telefone) {
-  const query = `UPDATE players SET ativo = 'N' WHERE telefone = $1 RETURNING *`;
-  const values = [telefone];
-
-  try {
-    const res = await pool.query(query, values);
-    if (res.rowCount > 0) {
-      console.log('Jogador inativado:', res.rows[0]);
-      return res.rows[0];
-    } else {
-      console.log('Nenhum jogador encontrado com o Telefone fornecido.');
-      return null;
-    }
-  } catch (err) {
-    console.error('Erro ao inativar jogador:', err.stack);
-    return null;
-  }
-}
-
-// Função para inativar um jogador pelo ID
-async function ativarPlayerID(id) {
-  const query = `UPDATE players SET ativo = 'S' WHERE id = $1 RETURNING *`;
-  const values = [id];
-
-  try {
-    const res = await pool.query(query, values);
-    if (res.rowCount > 0) {
-      console.log('Jogador inativado:', res.rows[0]);
-      return res.rows[0];
-    } else {
-      console.log('Nenhum jogador encontrado com o ID fornecido.');
-      return null;
-    }
-  } catch (err) {
-    console.error('Erro ao inativar jogador:', err.stack);
-    return null;
-  }
-}
-
-// Função para inativar um jogador pelo Telefone
-async function ativarPlayerTelefone(telefone) {
-  const query = `UPDATE players SET ativo = 'S' WHERE telefone = $1 RETURNING *`;
-  const values = [telefone];
-
-  try {
-    const res = await pool.query(query, values);
-    if (res.rowCount > 0) {
-      console.log('Jogador inativado:', res.rows[0]);
-      return res.rows[0];
-    } else {
-      console.log('Nenhum jogador encontrado com o Telefone fornecido.');
-      return null;
-    }
-  } catch (err) {
-    console.error('Erro ao inativar jogador:', err.stack);
-    return null;
-  }
-}
-
-module.exports = {
-  addPlayer,
-  getPlayerByPhone,
-  inativarPlayerID,
-  inativarPlayerTelefone,
-  ativarPlayerID,
-  ativarPlayerTelefone,
-};
+// Inicializa o banco de dados e as tabelas
+initializeDatabase()
+  .then(() => console.log('Inicialização completa.'))
+  .catch((err) => console.error('Erro na inicialização do banco de dados:', err.stack))
+  .finally(() => pool.end()); // Fecha a conexão com o banco de dados 'eneasredpill'
