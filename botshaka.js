@@ -28,11 +28,11 @@ const cleanMessages = require('./modules/utils/cleanMessages.js');
 const help = require('./modules/utils/help.js');
 const contact = require('./modules/utils/contact.js');
 const ping = require('./modules/utils/ping.js');
-const addPlayer = require('./modules/utils/addplayers');
-const inativaPlayerID = require('./modules/utils/inativaPlayerID');
-const inativaPlayerTel = require('./modules/utils/inativaPlayerTel');
-const ativaPlayerID = require('./modules/utils/ativaPlayerID');
-const ativaPlayerTel = require('./modules/utils/ativaPlayerTel');
+const addPlayer = require('./model/players/addplayers');
+const deactivatePlayerByID = require('./model/players/deactivatePlayerByID.js');
+const deactivatePlayerByPhone = require('./model/players/deactivatePlayerByPhone.js');
+const activatePlayerByID = require('./model/players/activatePlayerByID.js');
+const activatePlayerByPhone = require('./model/players/activatePlayerByPhone.js');
 const saveImageToDrive = require('./modules/utils/saveImageToDrive');
 
 //GPT Functions Import
@@ -164,12 +164,12 @@ client.on('ready', async () => {
 
   // Chama a função de PING
   ping(client);
-
-  // Chama a função para adicionar jogador
-  addPlayer(client);
-
+  
   // Chama a função para salvar imagens no Google Drive
   saveImageToDrive(client);
+  
+  // Chama a função para adicionar jogador
+  addPlayer(client);
 
   // Chama a função para inativar um jogador pelo ID
   deactivatePlayerByID(client);
