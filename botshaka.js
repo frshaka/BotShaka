@@ -29,6 +29,10 @@ const help = require('./modules/utils/help.js');
 const contact = require('./modules/utils/contact.js');
 const ping = require('./modules/utils/ping.js');
 const addPlayer = require('./modules/utils/addplayers');
+const inativaPlayerID = require('./modules/utils/inativaPlayerID');
+const inativaPlayerTel = require('./modules/utils/inativaPlayerTel');
+const ativaPlayerID = require('./modules/utils/ativaPlayerID');
+const ativaPlayerTel = require('./modules/utils/ativaPlayerTel');
 const saveImageToDrive = require('./modules/utils/saveImageToDrive');
 
 //GPT Functions Import
@@ -117,7 +121,7 @@ io.on('connection', function(socket) {
   });
 });
 
-// Função para criar subdiretório no Google Drive
+/*// Função para criar subdiretório no Google Drive
 async function createSubdirectory(auth, parentFolderId, subdirectoryName) {
   const driveService = google.drive({ version: 'v3', auth });
 
@@ -171,7 +175,7 @@ async function uploadToGoogleDrive(auth, fileName, filePath, parentFolderId) {
   });
 
   return response.data;
-}
+}*/
 
 
 //EXECUÇÃO DAS AÇÕES EXTERNAS
@@ -224,6 +228,17 @@ client.on('ready', async () => {
   // Chama a função para salvar imagens no Google Drive
   saveImageToDrive(client);
 
+  // Chama a função para inativar um jogador pelo ID
+  deactivatePlayerByID(client);
+
+  // Chama a função para inativar um jogador pelo Telefone
+  deactivatePlayerByPhone(client);
+
+  // Chama a função para ativar um jogador pelo Telefone
+  activatePlayerByID(client);
+  
+  // Chama a função para ativar um jogador pelo Telefone
+  activatePlayerByPhone(client);
 });
 
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
@@ -254,7 +269,7 @@ const chatGPTRequest = async (message) => {
     const response = await axios.post(
       apiUrl,
       {
-        model: 'gpt-4o',
+        model: 'chatgpt-4o-latest',
         messages: messages
       },
       {
