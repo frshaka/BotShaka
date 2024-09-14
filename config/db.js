@@ -49,7 +49,7 @@ async function createTables() {
       name VARCHAR(100) NOT NULL,
       phone VARCHAR(15) UNIQUE NOT NULL,
       is_active BOOLEAN DEFAULT TRUE,
-      id_adm BOOLEAN DEFAULT FALSE
+      is_adm BOOLEAN DEFAULT FALSE
     );
   `;
 
