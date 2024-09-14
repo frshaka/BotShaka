@@ -131,10 +131,10 @@ async function addPlayer(id, nick, name, phone) {
   }
 }
 
-// Função para buscar jogador pelo telefone
+// Função para buscar jogador pelo telefone, com LIKE '%telefone'
 async function getPlayerByPhone(phone) {
-  const query = `SELECT * FROM erp_players WHERE phone = $1`;
-  const values = [phone];
+  const query = `SELECT * FROM erp_players WHERE phone LIKE $1`;  // Utilizando LIKE na consulta
+  const values = [`%${phone}`];
 
   try {
     const res = await pool.query(query, values);
