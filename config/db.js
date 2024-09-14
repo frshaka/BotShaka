@@ -44,7 +44,7 @@ async function createTables() {
   // Criar tabela 'erp_players' se não existir
   const createPlayersTableQuery = `
     CREATE TABLE IF NOT EXISTS erp_players (
-      id UUID PRIMARY KEY,
+      id INTEGER PRIMARY KEY,
       nick VARCHAR(50) NOT NULL,
       name VARCHAR(100) NOT NULL,
       phone VARCHAR(15) UNIQUE NOT NULL,
@@ -56,7 +56,7 @@ async function createTables() {
   const createGvgTableQuery = `
     CREATE TABLE IF NOT EXISTS erp_gvg (
       id UUID PRIMARY KEY,
-      fk_id_erp_players UUID REFERENCES erp_players(id) ON DELETE CASCADE,
+      fk_id_erp_players INTEGER REFERENCES erp_players(id) ON DELETE CASCADE,
       is_gvg BOOLEAN DEFAULT FALSE,
       fixed BOOLEAN DEFAULT FALSE,
       rotation BOOLEAN DEFAULT FALSE
@@ -74,14 +74,14 @@ async function createTables() {
     CREATE TABLE IF NOT EXISTS erp_relics_players_team (
       id UUID PRIMARY KEY,
       fk_id_erp_relics_team UUID REFERENCES erp_relics_team(id) ON DELETE CASCADE,
-      fk_id_erp_players UUID REFERENCES erp_players(id) ON DELETE CASCADE
+      fk_id_erp_players INTEGER REFERENCES erp_players(id) ON DELETE CASCADE
     );
   `;
 
   const createRelicsDmgTableQuery = `
     CREATE TABLE IF NOT EXISTS erp_relics_dmg (
       id UUID PRIMARY KEY,
-      fk_id_erp_players UUID REFERENCES erp_players(id) ON DELETE CASCADE,
+      fk_id_erp_players INTEGER REFERENCES erp_players(id) ON DELETE CASCADE,
       fk_id_erp_relics_players_team UUID REFERENCES erp_relics_players_team(id) ON DELETE CASCADE,
       session VARCHAR(255) NOT NULL,
       boss VARCHAR(255) NOT NULL,
