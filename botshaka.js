@@ -28,11 +28,11 @@ const cleanMessages = require('./modules/utils/cleanMessages.js');
 const help = require('./modules/utils/help.js');
 const contact = require('./modules/utils/contact.js');
 const ping = require('./modules/utils/ping.js');
-const addPlayer = require('./model/players/addplayers');
-const deactivatePlayerByID = require('./model/players/deactivatePlayerByID.js');
-const deactivatePlayerByPhone = require('./model/players/deactivatePlayerByPhone.js');
-const activatePlayerByID = require('./model/players/activatePlayerByID.js');
-const activatePlayerByPhone = require('./model/players/activatePlayerByPhone.js');
+const addPlayer = require('./model/player/addplayers.js');
+const deactivatePlayerByID = require('./model/player/deactivatePlayerByID.js');
+const deactivatePlayerByPhone = require('./model/player/deactivatePlayerByPhone.js');
+const activatePlayerByID = require('./model/player/activatePlayerByID.js');
+const activatePlayerByPhone = require('./model/player/activatePlayerByPhone.js');
 const saveImageToDrive = require('./modules/utils/saveImageToDrive');
 
 //GPT Functions Import
