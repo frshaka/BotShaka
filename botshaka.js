@@ -28,11 +28,11 @@ const cleanMessages = require('./modules/utils/cleanMessages.js');
 const help = require('./modules/utils/help.js');
 const contact = require('./modules/utils/contact.js');
 const ping = require('./modules/utils/ping.js');
-const addPlayer = require('./modules/utils/addplayers');
-const inativaPlayerID = require('./modules/utils/inativaPlayerID');
-const inativaPlayerTel = require('./modules/utils/inativaPlayerTel');
-const ativaPlayerID = require('./modules/utils/ativaPlayerID');
-const ativaPlayerTel = require('./modules/utils/ativaPlayerTel');
+const addPlayer = require('./model/players/addplayers');
+const deactivatePlayerByID = require('./model/players/deactivatePlayerByID.js');
+const deactivatePlayerByPhone = require('./model/players/deactivatePlayerByPhone.js');
+const activatePlayerByID = require('./model/players/activatePlayerByID.js');
+const activatePlayerByPhone = require('./model/players/activatePlayerByPhone.js');
 const saveImageToDrive = require('./modules/utils/saveImageToDrive');
 
 //GPT Functions Import
@@ -121,63 +121,6 @@ io.on('connection', function(socket) {
   });
 });
 
-/*// Função para criar subdiretório no Google Drive
-async function createSubdirectory(auth, parentFolderId, subdirectoryName) {
-  const driveService = google.drive({ version: 'v3', auth });
-
-  // Verificar se o subdiretório já existe
-  const existingFolderResponse = await driveService.files.list({
-    q: `'${parentFolderId}' in parents and name='${subdirectoryName}' and mimeType='application/vnd.google-apps.folder'`,
-    fields: 'files(id, name)',
-    spaces: 'drive'
-  });
-
-  if (existingFolderResponse.data.files.length > 0) {
-    // Subdiretório já existe
-    console.log('Subdiretório já existe:', existingFolderResponse.data.files[0].id);
-    return existingFolderResponse.data.files[0].id;
-  } else {
-    // Criar novo subdiretório
-    const fileMetadata = {
-      'name': subdirectoryName,
-      'mimeType': 'application/vnd.google-apps.folder',
-      'parents': [parentFolderId]
-    };
-
-    const folder = await driveService.files.create({
-      resource: fileMetadata,
-      fields: 'id'
-    });
-
-    console.log('Subdiretório criado com sucesso:', folder.data.id);
-    return folder.data.id;
-  }
-}
-
-// Função para fazer upload no Google Drive
-async function uploadToGoogleDrive(auth, fileName, filePath, parentFolderId) {
-  const driveService = google.drive({ version: 'v3', auth });
-
-  const fileMetadata = {
-    'name': fileName,
-    'parents': [parentFolderId]
-  };
-
-  const media = {
-    mimeType: mime.lookup(filePath),
-    body: fs.createReadStream(filePath)
-  };
-
-  const response = await driveService.files.create({
-    resource: fileMetadata,
-    media: media,
-    fields: 'id'
-  });
-
-  return response.data;
-}*/
-
-
 //EXECUÇÃO DAS AÇÕES EXTERNAS
 
 const groupId = '120363198603699526@g.us'; // ID do grupo que você quer monitorar
@@ -221,12 +164,12 @@ client.on('ready', async () => {
 
   // Chama a função de PING
   ping(client);
-
-  // Chama a função para adicionar jogador
-  addPlayer(client);
-
+  
   // Chama a função para salvar imagens no Google Drive
   saveImageToDrive(client);
+  
+  // Chama a função para adicionar jogador
+  addPlayer(client);
 
   // Chama a função para inativar um jogador pelo ID
   deactivatePlayerByID(client);

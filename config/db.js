@@ -114,6 +114,117 @@ async function createTables() {
   }
 }
 
+// Funções CRUD para os jogadores
+
+// Função para adicionar um novo jogador
+async function addPlayer(id, nick, name, phone) {
+  const query = `INSERT INTO erp_players (id, nick, name, phone) VALUES ($1, $2, $3, $4) RETURNING *`;
+  const values = [id, nick, name, phone];
+
+  try {
+    const res = await pool.query(query, values);
+    console.log('Jogador adicionado:', res.rows[0]);
+    return res.rows[0]; // Retorna o jogador adicionado
+  } catch (err) {
+    console.error('Erro ao adicionar jogador:', err.stack);
+    return null; // Retorna null em caso de erro
+  }
+}
+
+// Função para buscar jogador pelo telefone
+async function getPlayerByPhone(phone) {
+  const query = `SELECT * FROM erp_players WHERE phone = $1`;
+  const values = [phone];
+
+  try {
+    const res = await pool.query(query, values);
+    return res.rows[0];
+  } catch (err) {
+    console.error('Erro ao buscar jogador por telefone:', err.stack);
+    return null;
+  }
+}
+
+// Função para inativar um jogador pelo ID
+async function deactivatePlayerByID(id) {
+  const query = `UPDATE erp_players SET is_active = FALSE WHERE id = $1 RETURNING *`;
+  const values = [id];
+
+  try {
+    const res = await pool.query(query, values);
+    if (res.rowCount > 0) {
+      console.log('Jogador inativado:', res.rows[0]);
+      return res.rows[0];
+    } else {
+      console.log('Nenhum jogador encontrado com o ID fornecido.');
+      return null;
+    }
+  } catch (err) {
+    console.error('Erro ao inativar jogador:', err.stack);
+    return null;
+  }
+}
+
+// Função para inativar um jogador pelo Telefone
+async function deactivatePlayerByPhone(phone) {
+  const query = `UPDATE erp_players SET is_active = FALSE WHERE phone = $1 RETURNING *`;
+  const values = [phone];
+
+  try {
+    const res = await pool.query(query, values);
+    if (res.rowCount > 0) {
+      console.log('Jogador inativado:', res.rows[0]);
+      return res.rows[0];
+    } else {
+      console.log('Nenhum jogador encontrado com o telefone fornecido.');
+      return null;
+    }
+  } catch (err) {
+    console.error('Erro ao inativar jogador:', err.stack);
+    return null;
+  }
+}
+
+// Função para ativar um jogador pelo ID
+async function activatePlayerByID(id) {
+  const query = `UPDATE erp_players SET is_active = TRUE WHERE id = $1 RETURNING *`;
+  const values = [id];
+
+  try {
+    const res = await pool.query(query, values);
+    if (res.rowCount > 0) {
+      console.log('Jogador ativado:', res.rows[0]);
+      return res.rows[0];
+    } else {
+      console.log('Nenhum jogador encontrado com o ID fornecido.');
+      return null;
+    }
+  } catch (err) {
+    console.error('Erro ao ativar jogador:', err.stack);
+    return null;
+  }
+}
+
+// Função para ativar um jogador pelo Telefone
+async function activatePlayerByPhone(phone) {
+  const query = `UPDATE erp_players SET is_active = TRUE WHERE phone = $1 RETURNING *`;
+  const values = [phone];
+
+  try {
+    const res = await pool.query(query, values);
+    if (res.rowCount > 0) {
+      console.log('Jogador ativado:', res.rows[0]);
+      return res.rows[0];
+    } else {
+      console.log('Nenhum jogador encontrado com o telefone fornecido.');
+      return null;
+    }
+  } catch (err) {
+    console.error('Erro ao ativar jogador:', err.stack);
+    return null;
+  }
+}
+
 // Função para inicializar o banco de dados e as tabelas
 async function initializeDatabase() {
   await createDatabaseIfNotExists(); // Certifique-se de que o banco foi criado
@@ -125,3 +236,13 @@ initializeDatabase()
   .then(() => console.log('Inicialização completa.'))
   .catch((err) => console.error('Erro na inicialização do banco de dados:', err.stack))
   .finally(() => pool.end()); // Fecha a conexão com o banco de dados 'eneasredpill'
+
+// Exporta as funções CRUD
+module.exports = {
+  addPlayer,
+  getPlayerByPhone,
+  deactivatePlayerByID,
+  deactivatePlayerByPhone,
+  activatePlayerByID,
+  activatePlayerByPhone,
+};
