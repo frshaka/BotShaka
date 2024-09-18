@@ -235,7 +235,7 @@ async function initializeDatabase() {
 initializeDatabase()
   .then(() => console.log('Inicialização completa.'))
   .catch((err) => console.error('Erro na inicialização do banco de dados:', err.stack))
-  .finally(() => pool.end()); // Fecha a conexão com o banco de dados 'eneasredpill'
+  //.finally(() => pool.end()); // Fecha a conexão com o banco de dados 'eneasredpill'
 
 // Exporta as funções CRUD
 module.exports = {
