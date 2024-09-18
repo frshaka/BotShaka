@@ -78,6 +78,8 @@ const client = new Client({
     ] }
 });
 
+client.setMaxListeners(20);
+
 client.initialize();
 
 io.on('connection', function(socket) {
