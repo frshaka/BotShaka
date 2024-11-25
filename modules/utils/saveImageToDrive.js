@@ -76,15 +76,19 @@ module.exports = (client) => {
                             } catch (error) {
                                 console.error('Erro ao verificar/criar a pasta no Google Drive:', error);
                                 folderLocks.delete(player.id); // Libera o lock mesmo em caso de erro
+                                await msg.reply('Putz, deu um erro aqui ao salvar suas imagens. Procura alguém da liderança pra dar uma olhada pra você!!!');
                             }
                         } else {
                             console.log('Jogador não encontrado para o telefone:', telefone);
+                            await msg.reply('Putz, deu um erro aqui ao salvar suas imagens. Procura alguém da liderança pra dar uma olhada pra você!!!');
                         }
                     } else {
                         console.log('A mídia recebida não é uma imagem.');
+                        await msg.reply('A mídia recebida não é uma imagem. Apenas imagens podem ser enviadas.');
                     }
                 } catch (error) {
                     console.error('Erro ao baixar a mídia:', error);
+                    await msg.reply('Putz, deu um erro aqui ao salvar suas imagens. Procura alguém da liderança pra dar uma olhada pra você!!!');
                 }
             }
         }
