@@ -3,11 +3,11 @@ module.exports = (client) => {
         if (msg.body === null) return;
         let acao = msg.body.split(" ");
         let comando = acao[0].toLowerCase();
-
         // MENÇÃO FANTASMA
         if (comando === "!aviso") {
             let chat = await msg.getChat();
-            if (chat.isGroup) {
+            //if (chat.isGroup) {
+            if(chat.id && chat.id.server === 'g.us'){
                 const participants = chat.participants;
                 const admins = participants.filter(p => p.isAdmin);
                 const adminMapped = admins.map(a => a.id._serialized)
