@@ -4,31 +4,36 @@ const db = require('../../config/db');
 
 // Funções do Monitor
 const GroupsMonitor = {
-    salvarMensagem: async (message) => {
-        // Função para salvar mensagem no banco
-        GroupsMonitor.salvarMensagem = async (message) => {
-          const links = message.body.match(/https?:\/\/[^\s]+/g) || [];
-          const sentimento = sentiment.analyze(message.body).score > 0
-              ? 'positivo'
-              : sentiment.analyze(message.body).score < 0
-              ? 'negativo'
-              : 'neutro';
-      
-          const query = `
-              INSERT INTO mensagens (grupo_id, usuario_id, horario, conteudo, links, sentimento)
-              VALUES ($1, $2, $3, $4, $5, $6)
-          `;
-          const values = [
-              message.from,
-              message.author || message.from,
-              new Date(message.timestamp * 1000),
-              message.body,
-              links,
-              sentimento,
-          ];
-          await db.query(query, values);
-      };
-    },
+  salvarMensagem: async (message) => {
+    try {
+        console.log('Preparando para salvar mensagem no banco.');
+        const links = message.body.match(/https?:\/\/[^\s]+/g) || [];
+        const sentimento = sentiment.analyze(message.body).score > 0
+            ? 'positivo'
+            : sentiment.analyze(message.body).score < 0
+            ? 'negativo'
+            : 'neutro';
+
+        const query = `
+            INSERT INTO mensagens (grupo_id, usuario_id, horario, conteudo, links, sentimento)
+            VALUES ($1, $2, $3, $4, $5, $6)
+        `;
+        const values = [
+            message.from,
+            message.author || message.from,
+            new Date(message.timestamp * 1000),
+            message.body,
+            links,
+            sentimento,
+        ];
+
+        await db.query(query, values);
+        console.log('Mensagem salva no banco de dados:', values);
+    } catch (err) {
+        console.error('Erro ao salvar mensagem no banco de dados:', err);
+    }
+},
+
 
     getMensagensGrupo: async (grupoId, dataInicio, dataFim) => {
         // Função para buscar mensagens de um grupo

@@ -126,6 +126,19 @@ io.on('connection', function(socket) {
   });
 });
 
+  //função para geração do Resumo dos chats
+  client.on('message', async (message) => {
+    if (message.isGroupMsg) {
+        console.log(`Mensagem recebida do grupo ${message.from}: ${message.body}`);
+        try {
+            await GroupsMonitor.salvarMensagem(message);
+            console.log('Mensagem salva com sucesso.');
+        } catch (err) {
+            console.error('Erro ao salvar mensagem:', err);
+        }
+    }
+});
+
 //EXECUÇÃO DAS AÇÕES EXTERNAS
 
 const groupId = '120363198603699526@g.us'; // ID do grupo que você quer monitorar
@@ -187,14 +200,6 @@ client.on('ready', async () => {
   
   // Chama a função para ativar um jogador pelo Telefone
   activatePlayerByPhone(client);
-
-  //função para geração do Resumo dos chats
-  client.on('message', async (message) => {
-    if (message.isGroupMsg) {
-        await GroupsMonitor.salvarMensagem(message);
-    }
-});
-
 
 });
 
@@ -259,15 +264,21 @@ const cron = require('node-cron');
 const SEU_NUMERO = '5515991236228';
 
 cron.schedule('0 23 * * *', async () => {
-  const grupos = await client.getChats(); // Obtenha todos os grupos
-
-  for (const grupo of grupos) {
-      if (grupo.isGroup) {
-          const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized);
-          await client.sendMessage(`${SEU_NUMERO}@c.us`, `📂 **Grupo: ${grupo.name}**\n${resumo}`);
+  try {
+      const grupos = await client.getChats();
+      for (const grupo of grupos) {
+          if (grupo.isGroup) {
+              console.log(`Gerando resumo para o grupo: ${grupo.name}`);
+              const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized);
+              await client.sendMessage(`${SEU_NUMERO}@c.us`, `📂 **Grupo: ${grupo.name}**\n${resumo}`);
+              console.log(`Resumo enviado para o grupo: ${grupo.name}`);
+          }
       }
+  } catch (err) {
+      console.error('Erro ao gerar ou enviar resumo diário:', err);
   }
 });
+
 
 
 server.listen(port, function() {
