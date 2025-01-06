@@ -1,4 +1,5 @@
-const db = require('../../config/db'); // Importa a conexão com o banco de dados
+const db = require('../../config/db');
+const { pontuarPalavraComHuggingFace } = require('../utils/huggingface');
 
 // Dicionário base para palavras e emojis
 const baseDictionary = {
@@ -47,9 +48,10 @@ const carregarDicionarioPersonalizado = async () => {
     return { ...baseDictionary, ...customDictionary }; // Combina base com personalizado
 };
 
-// Função para adicionar uma nova palavra ao banco de dados
-const adicionarPalavraAoDicionario = async (palavra, pontuacao) => {
+// Função para adicionar uma nova palavra ao banco de dados com pontuação automática
+const adicionarPalavraAoDicionario = async (palavra) => {
     try {
+        const { pontuacao, explicacao } = await pontuarPalavraComHuggingFace(palavra); // Usa Hugging Face
         const query = `
             INSERT INTO sentimentos (palavra, pontuacao)
             VALUES ($1, $2)

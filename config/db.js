@@ -136,6 +136,7 @@ async function createTables() {
     console.log('Criando tabela sentimentos...');
     await pool.query(createSentimentosTableQuery);
     console.log('Tabela sentimentos criada ou já existente.');
+    
   } catch (err) {
     console.error('Erro ao criar tabelas:', err.stack);
   }
