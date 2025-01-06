@@ -254,7 +254,6 @@ client.on('message', async (msg) => {
 
 ///Cron para envio do resumo diário do Grupo
 const cron = require('node-cron');
-const GroupsMonitor = require('./modules/monitor/GroupsMonitor');
 
 // Seu número de WhatsApp (formato internacional)
 const SEU_NUMERO = '5515991236228';
