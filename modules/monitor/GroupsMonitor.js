@@ -1,9 +1,6 @@
-const { Client } = require('pg'); // Banco de Dados
 const Sentiment = require('sentiment'); // Análise de Sentimentos
 const sentiment = new Sentiment();
 const db = require('../../config/db');
-
-clientDB.connect();
 
 // Funções do Monitor
 const GroupsMonitor = {
@@ -29,26 +26,24 @@ const GroupsMonitor = {
               links,
               sentimento,
           ];
-          await clientDB.query(query, values);
+          await db.query(query, values);
       };
-      
     },
 
     getMensagensGrupo: async (grupoId, dataInicio, dataFim) => {
         // Função para buscar mensagens de um grupo
         GroupsMonitor.getMensagensGrupo = async (grupoId, dataInicio, dataFim) => {
           const query = `
-              SELECT usuario_id, COUNT(*) as mensagens
+              SELECT usuario_id, COUNT(*) AS mensagens
               FROM mensagens
               WHERE grupo_id = $1 AND horario BETWEEN $2 AND $3
               GROUP BY usuario_id
               ORDER BY mensagens DESC
-              LIMIT 5
+              LIMIT 5;
           `;
-          const { rows } = await clientDB.query(query, [grupoId, dataInicio, dataFim]);
+          const { rows } = await db.query(query, [grupoId, dataInicio, dataFim]);
           return rows;
       };
-      
     },
 
     getTopParticipantes: async (grupoId, dataInicio, dataFim) => {
@@ -62,7 +57,7 @@ const GroupsMonitor = {
               ORDER BY mensagens DESC
               LIMIT 5;
           `;
-          const { rows } = await clientDB.query(query, [grupoId, dataInicio, dataFim]);
+          const { rows } = await db.query(query, [grupoId, dataInicio, dataFim]);
           return rows.map(row => ({
               usuario: row.usuario_id,
               mensagens: row.mensagens,
@@ -81,7 +76,7 @@ const GroupsMonitor = {
               GROUP BY hora
               ORDER BY mensagens DESC;
           `;
-          const { rows } = await clientDB.query(query, [grupoId, dataInicio, dataFim]);
+          const { rows } = await db.query(query, [grupoId, dataInicio, dataFim]);
           return rows;
       };
       
@@ -97,7 +92,7 @@ const GroupsMonitor = {
                     (CHAR_LENGTH(conteudo) > 100 OR links IS NOT NULL)
               ORDER BY horario ASC;
           `;
-          const { rows } = await clientDB.query(query, [grupoId, dataInicio, dataFim]);
+          const { rows } = await db.query(query, [grupoId, dataInicio, dataFim]);
           return rows;
       };
       
