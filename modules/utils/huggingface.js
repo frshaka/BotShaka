@@ -1,7 +1,7 @@
 const { HfInference } = require('@huggingface/inference');
 
 // Substitua pelo seu token de API da Hugging Face
-const hf = new HfInference('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');
+const hf = new HfInference('API AQUI');
 
 // Função para pontuar palavras com Hugging Face
 const pontuarPalavraComHuggingFace = async (palavra) => {
