@@ -42,6 +42,9 @@ const chatGPT = require('./modules/gptFunctions/chatGPT.js');
 //General Messages Import
 const guildInfo = require('./modules/messages/guildInfo.js');
 
+//Gruops Monitor Import
+const GroupsMonitor = require('./modules/monitor/GroupsMonitor');
+
 function delay(t, v) {
   return new Promise(function(resolve) { 
       setTimeout(resolve.bind(null, v), t)
@@ -184,6 +187,15 @@ client.on('ready', async () => {
   
   // Chama a função para ativar um jogador pelo Telefone
   activatePlayerByPhone(client);
+
+  //função para geração do Resumo dos chats
+  client.on('message', async (message) => {
+    if (message.isGroupMsg) {
+        await GroupsMonitor.salvarMensagem(message);
+    }
+});
+
+
 });
 
 const apiUrl = 'https://api.openai.com/v1/chat/completions';
@@ -239,6 +251,25 @@ client.on('message', async (msg) => {
     client.sendMessage(msg.from, reply);
   }
 });
+
+///Cron para envio do resumo diário do Grupo
+const cron = require('node-cron');
+const GroupsMonitor = require('./modules/monitor/GroupsMonitor');
+
+// Seu número de WhatsApp (formato internacional)
+const SEU_NUMERO = '5515991236228';
+
+cron.schedule('0 23 * * *', async () => {
+  const grupos = await client.getChats(); // Obtenha todos os grupos
+
+  for (const grupo of grupos) {
+      if (grupo.isGroup) {
+          const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized);
+          await client.sendMessage(`${SEU_NUMERO}@c.us`, `📂 **Grupo: ${grupo.name}**\n${resumo}`);
+      }
+  }
+});
+
 
 server.listen(port, function() {
   console.log(`BotShaka está rodando na porta ${port}`);
