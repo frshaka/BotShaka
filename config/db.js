@@ -89,6 +89,18 @@ async function createTables() {
     );
   `;
 
+  const createMessagesTableQuery = `
+        CREATE TABLE IF NOT EXISTS mensagens (
+            id SERIAL PRIMARY KEY,
+            grupo_id VARCHAR(255) NOT NULL,
+            usuario_id VARCHAR(255) NOT NULL,
+            horario TIMESTAMP NOT NULL,
+            conteudo TEXT,
+            links TEXT[],
+            sentimento VARCHAR(50)
+        );
+    `;
+
   try {
     console.log('Criando tabela erp_players...');
     await pool.query(createPlayersTableQuery);
@@ -109,6 +121,10 @@ async function createTables() {
     console.log('Criando tabela erp_relics_dmg...');
     await pool.query(createRelicsDmgTableQuery);
     console.log('Tabela erp_relics_dmg criada ou já existente.');
+
+    console.log('Criando tabela mensagens...');
+    await pool.query(createMessagesTableQuery);
+    console.log('Tabela mensagens criada ou já existente.');
   } catch (err) {
     console.error('Erro ao criar tabelas:', err.stack);
   }

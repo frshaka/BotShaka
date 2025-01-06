@@ -1,9 +1,7 @@
 const { Client } = require('pg'); // Banco de Dados
 const Sentiment = require('sentiment'); // Análise de Sentimentos
 const sentiment = new Sentiment();
-const clientDB = new Client({
-    connectionString: process.env.DATABASE_URL,
-});
+const db = require('../../config/db');
 
 clientDB.connect();
 
