@@ -9,7 +9,16 @@ const poolAdmin = new Pool({
   port: 5432,                  // Porta padrão do PostgreSQL
 });
 
-// Função para verificar e criar o banco de dados se não existir
+// Conexão ao banco de dados 'eneasredpill'
+const pool = new Pool({
+  user: 'postgres',            // Substitua pelo seu usuário do PostgreSQL
+  host: 'localhost',           // Host do banco de dados
+  database: 'eneasredpill',    // Nome do banco de dados a ser usado
+  password: 'postgres',        // Senha do usuário
+  port: 5432,                  // Porta padrão do PostgreSQL
+});
+
+// Função para verificar e criar o banco de dados, se necessário
 async function createDatabaseIfNotExists() {
   const checkDbQuery = `SELECT 1 FROM pg_database WHERE datname = 'eneasredpill'`;
   const createDbQuery = `CREATE DATABASE eneasredpill`;
@@ -30,18 +39,8 @@ async function createDatabaseIfNotExists() {
   }
 }
 
-// Conexão ao banco de dados 'eneasredpill'
-const pool = new Pool({
-  user: 'postgres',            // Substitua pelo seu usuário do PostgreSQL
-  host: 'localhost',           // Host do banco de dados
-  database: 'eneasredpill',    // Nome do banco de dados a ser usado
-  password: 'postgres',        // Senha do usuário
-  port: 5432,                  // Porta padrão do PostgreSQL
-});
-
-// Função assíncrona para criar tabelas em ordem
+// Função para criar tabelas no banco de dados
 async function createTables() {
-  // Criar tabela 'erp_players' se não existir
   const createPlayersTableQuery = `
     CREATE TABLE IF NOT EXISTS erp_players (
       id INTEGER PRIMARY KEY,
@@ -90,16 +89,24 @@ async function createTables() {
   `;
 
   const createMessagesTableQuery = `
-        CREATE TABLE IF NOT EXISTS mensagens (
-            id SERIAL PRIMARY KEY,
-            grupo_id VARCHAR(255) NOT NULL,
-            usuario_id VARCHAR(255) NOT NULL,
-            horario TIMESTAMP NOT NULL,
-            conteudo TEXT,
-            links TEXT[],
-            sentimento VARCHAR(50)
-        );
-    `;
+    CREATE TABLE IF NOT EXISTS mensagens (
+      id SERIAL PRIMARY KEY,
+      grupo_id VARCHAR(255) NOT NULL,
+      usuario_id VARCHAR(255) NOT NULL,
+      horario TIMESTAMP NOT NULL,
+      conteudo TEXT,
+      links TEXT[],
+      sentimento VARCHAR(50)
+    );
+  `;
+
+  const createSentimentosTableQuery = `
+  CREATE TABLE IF NOT EXISTS sentimentos (
+    palavra TEXT PRIMARY KEY,
+    pontuacao INT NOT NULL
+  );
+  `;
+
 
   try {
     console.log('Criando tabela erp_players...');
@@ -125,14 +132,16 @@ async function createTables() {
     console.log('Criando tabela mensagens...');
     await pool.query(createMessagesTableQuery);
     console.log('Tabela mensagens criada ou já existente.');
+
+    console.log('Criando tabela sentimentos...');
+    await pool.query(createSentimentosTableQuery);
+    console.log('Tabela sentimentos criada ou já existente.');
   } catch (err) {
     console.error('Erro ao criar tabelas:', err.stack);
   }
 }
 
 // Funções CRUD para os jogadores
-
-// Função para adicionar um novo jogador
 async function addPlayer(id, nick, name, phone) {
   const query = `INSERT INTO erp_players (id, nick, name, phone) VALUES ($1, $2, $3, $4) RETURNING *`;
   const values = [id, nick, name, phone];
@@ -140,16 +149,15 @@ async function addPlayer(id, nick, name, phone) {
   try {
     const res = await pool.query(query, values);
     console.log('Jogador adicionado:', res.rows[0]);
-    return res.rows[0]; // Retorna o jogador adicionado
+    return res.rows[0];
   } catch (err) {
     console.error('Erro ao adicionar jogador:', err.stack);
-    return null; // Retorna null em caso de erro
+    return null;
   }
 }
 
-// Função para buscar jogador pelo telefone, com LIKE '%telefone'
 async function getPlayerByPhone(phone) {
-  const query = `SELECT * FROM erp_players WHERE phone LIKE $1`;  // Utilizando LIKE na consulta
+  const query = `SELECT * FROM erp_players WHERE phone LIKE $1`;
   const values = [`%${phone}`];
 
   try {
@@ -161,7 +169,6 @@ async function getPlayerByPhone(phone) {
   }
 }
 
-// Função para inativar um jogador pelo ID
 async function deactivatePlayerByID(id) {
   const query = `UPDATE erp_players SET is_active = FALSE WHERE id = $1 RETURNING *`;
   const values = [id];
@@ -181,7 +188,6 @@ async function deactivatePlayerByID(id) {
   }
 }
 
-// Função para inativar um jogador pelo Telefone
 async function deactivatePlayerByPhone(phone) {
   const query = `UPDATE erp_players SET is_active = FALSE WHERE phone = $1 RETURNING *`;
   const values = [phone];
@@ -201,7 +207,6 @@ async function deactivatePlayerByPhone(phone) {
   }
 }
 
-// Função para ativar um jogador pelo ID
 async function activatePlayerByID(id) {
   const query = `UPDATE erp_players SET is_active = TRUE WHERE id = $1 RETURNING *`;
   const values = [id];
@@ -221,7 +226,6 @@ async function activatePlayerByID(id) {
   }
 }
 
-// Função para ativar um jogador pelo Telefone
 async function activatePlayerByPhone(phone) {
   const query = `UPDATE erp_players SET is_active = TRUE WHERE phone = $1 RETURNING *`;
   const values = [phone];
@@ -241,20 +245,19 @@ async function activatePlayerByPhone(phone) {
   }
 }
 
-// Função para inicializar o banco de dados e as tabelas
+// Inicializa o banco de dados ao carregar o módulo
 async function initializeDatabase() {
   await createDatabaseIfNotExists(); // Certifique-se de que o banco foi criado
-  await createTables();              // Crie as tabelas em sequência
+  await createTables();              // Crie as tabelas
 }
 
-// Inicializa o banco de dados e as tabelas
 initializeDatabase()
   .then(() => console.log('Inicialização completa.'))
-  .catch((err) => console.error('Erro na inicialização do banco de dados:', err.stack))
-  //.finally(() => pool.end()); // Fecha a conexão com o banco de dados 'eneasredpill'
+  .catch((err) => console.error('Erro na inicialização do banco de dados:', err.stack));
 
-// Exporta as funções CRUD
+// Exporta funções e a função query
 module.exports = {
+  query: (text, params) => pool.query(text, params),
   addPlayer,
   getPlayerByPhone,
   deactivatePlayerByID,

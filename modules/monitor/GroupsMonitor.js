@@ -1,38 +1,45 @@
 const Sentiment = require('sentiment'); // Análise de Sentimentos
 const sentiment = new Sentiment();
 const db = require('../../config/db');
+const { carregarDicionarioPersonalizado } = require('./dictionary');
 
 // Funções do Monitor
 const GroupsMonitor = {
-  salvarMensagem: async (message) => {
-    try {
-        console.log('Preparando para salvar mensagem no banco.');
-        const links = message.body.match(/https?:\/\/[^\s]+/g) || [];
-        const sentimento = sentiment.analyze(message.body).score > 0
-            ? 'positivo'
-            : sentiment.analyze(message.body).score < 0
-            ? 'negativo'
-            : 'neutro';
+    salvarMensagem: async (message) => {
+        try {
+            const links = message.body.match(/https?:\/\/[^\s]+/g) || [];
+            const dicionario = await carregarDicionarioPersonalizado();
 
-        const query = `
-            INSERT INTO mensagens (grupo_id, usuario_id, horario, conteudo, links, sentimento)
-            VALUES ($1, $2, $3, $4, $5, $6)
-        `;
-        const values = [
-            message.from,
-            message.author || message.from,
-            new Date(message.timestamp * 1000),
-            message.body,
-            links,
-            sentimento,
-        ];
+            const resultado = sentiment.analyze(message.body, { extras: dicionario });
+            const sentimento = resultado.score > 0 ? 'positivo' : resultado.score < 0 ? 'negativo' : 'neutro';
 
-        await db.query(query, values);
-        console.log('Mensagem salva no banco de dados:', values);
-    } catch (err) {
-        console.error('Erro ao salvar mensagem no banco de dados:', err);
-    }
-},
+            // Detecta palavras não reconhecidas
+            const palavrasDesconhecidas = resultado.tokens.filter(token => !(token in dicionario));
+
+            // Adiciona automaticamente palavras desconhecidas com pontuação neutra (0)
+            for (const palavra of palavrasDesconhecidas) {
+                await adicionarPalavraAoDicionario(palavra, 0);
+            }
+
+            const query = `
+                INSERT INTO mensagens (grupo_id, usuario_id, horario, conteudo, links, sentimento)
+                VALUES ($1, $2, $3, $4, $5, $6)
+            `;
+            const values = [
+                message.from,
+                message.author || message.from,
+                new Date(message.timestamp * 1000),
+                message.body,
+                links,
+                sentimento,
+            ];
+
+            await db.query(query, values);
+        } catch (err) {
+            console.error('Erro ao salvar mensagem:', err);
+        }
+    },
+
 
 
     getMensagensGrupo: async (grupoId, dataInicio, dataFim) => {
