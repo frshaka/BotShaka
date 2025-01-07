@@ -120,7 +120,6 @@ const GroupsMonitor = {
             const discussoes = await GroupsMonitor.getDiscussõesElinks(grupoId, inicioDoDia, fimDoDia);
     
             if (topParticipantes.length === 0 && horarios.length === 0 && discussoes.length === 0) {
-                console.log(`Grupo ${grupoId} sem movimentação no período.`);
                 return null;
             }
     
@@ -128,31 +127,32 @@ const GroupsMonitor = {
             const mensagensParaResumo = [
                 ...topParticipantes.map((u) => `Usuário: ${u.usuario}, Mensagens: ${u.mensagens}`),
                 ...horarios.map((h) => `Horário: ${h.hora}h, Mensagens: ${h.mensagens}`),
-                ...discussoes.map((d) => `Discussão: ${d.conteudo}`),
+                ...discussoes.map((d) => `Discussão às ${new Date(d.horario).toLocaleTimeString()}: ${d.conteudo}`),
             ];
     
             const resumoIA = await generateSummary(mensagensParaResumo);
     
             const resumoFinal = `
-    📊 **Top 5 Participantes Ativos**:
+📊 **Top 5 Participantes Ativos**:
     ${topParticipantes.map((u) => `- ${u.usuario}: ${u.mensagens} mensagens`).join("\n")}
     
-    ⏰ **Horários de Maior Movimento**:
+⏰ **Horários de Maior Movimento**:
     ${horarios.map((h) => `- ${h.hora}h: ${h.mensagens} mensagens`).join("\n")}
     
-    🤖 **Resumo Gerado por IA**:
+🤖 **Resumo Gerado por IA**:
     ${resumoIA}
             `;
     
-            console.log(`Resumo diário gerado para o grupo ${grupoId}:`);
-            console.log(resumoFinal);
+            // Log resumido
+            console.log(`[LOG] Resumo gerado com sucesso para o grupo ${grupoId}.`);
     
             return resumoFinal;
         } catch (error) {
-            console.error("Erro ao gerar resumo diário:", error);
+            console.error(`[ERRO] Falha ao gerar resumo para o grupo ${grupoId}:`, error);
             return null;
         }
     },
+    
     
 }
 

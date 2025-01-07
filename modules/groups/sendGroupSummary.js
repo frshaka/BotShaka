@@ -5,7 +5,7 @@ const SEU_NUMERO = '5515991236228'; // Substitua pelo seu número no formato int
 
 const sendGroupSummary = (client) => {
     // Agendar envio diário às 15:49 (exemplo de horário)
-    schedule.scheduleJob('55 15 * * *', async () => {
+    schedule.scheduleJob('00 23 * * *', async () => {
         console.log(`[LOG] Iniciando envio de resumo diário às ${new Date().toISOString()}`);
 
         try {
@@ -26,15 +26,11 @@ const sendGroupSummary = (client) => {
                         const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized, client);
 
                         if (resumo) {
-                            console.log(`[LOG] Resumo gerado com sucesso para o grupo: ${grupo.name}`);
-                            
                             // Enviar resumo para o número configurado
                             await client.sendMessage(
                                 `${SEU_NUMERO}@c.us`,
                                 `📂 **Grupo: ${grupo.name}**\n${resumo}`
                             );
-
-                            console.log(`[LOG] Resumo enviado com sucesso para o grupo: ${grupo.name}`);
                         }
                     } catch (grupoErr) {
                         console.error(`[ERRO] Falha ao processar o grupo ${grupo.name}:`, grupoErr);
