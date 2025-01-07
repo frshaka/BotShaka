@@ -1,7 +1,7 @@
 const Sentiment = require('sentiment'); // Análise de Sentimentos
 const sentiment = new Sentiment();
 const db = require('../../config/db');
-const { carregarDicionarioPersonalizado, adicionarPalavraAoDicionario } = require('./dictionary');
+const { generateSummary } = require("../utils/generateSummary");
 
 // Funções do Monitor
 const GroupsMonitor = {
@@ -9,18 +9,9 @@ const GroupsMonitor = {
     salvarMensagem: async (message) => {
         try {
             const links = message.body.match(/https?:\/\/[^\s]+/g) || [];
-            const dicionario = await carregarDicionarioPersonalizado();
 
-            const resultado = sentiment.analyze(message.body, { extras: dicionario });
+            const resultado = sentiment.analyze(message.body);
             const sentimento = resultado.score > 0 ? 'positivo' : resultado.score < 0 ? 'negativo' : 'neutro';
-
-            // Detecta palavras não reconhecidas
-            const palavrasDesconhecidas = resultado.tokens.filter(token => !(token in dicionario));
-
-            // Adiciona automaticamente palavras desconhecidas com pontuação via Hugging Face
-            for (const palavra of palavrasDesconhecidas) {
-                await adicionarPalavraAoDicionario(palavra);
-            }
 
             const query = `
                 INSERT INTO mensagens (grupo_id, usuario_id, horario, conteudo, links, sentimento)
@@ -37,7 +28,7 @@ const GroupsMonitor = {
 
             await db.query(query, values);
         } catch (err) {
-            console.error('Erro ao salvar mensagem:', err);
+            console.error('[ERRO] Falha ao salvar mensagem:', err);
         }
     },
 
@@ -128,29 +119,42 @@ const GroupsMonitor = {
             const horarios = await GroupsMonitor.getHorariosMovimento(grupoId, inicioDoDia, fimDoDia);
             const discussoes = await GroupsMonitor.getDiscussõesElinks(grupoId, inicioDoDia, fimDoDia);
     
-            // Verifica se há qualquer movimentação no grupo
             if (topParticipantes.length === 0 && horarios.length === 0 && discussoes.length === 0) {
                 console.log(`Grupo ${grupoId} sem movimentação no período.`);
                 return null;
             }
     
-            return `
+            // Preparar dados para o ChatGPT
+            const mensagensParaResumo = [
+                ...discussoes.map((d) => d.conteudo),
+                ...topParticipantes.map((u) => `Usuário: ${u.usuario}, Mensagens: ${u.mensagens}`),
+            ];
+    
+            const resumoIA = await generateSummary(mensagensParaResumo);
+    
+            const resumoFinal = `
     📊 **Top 5 Participantes Ativos**:
-    ${topParticipantes.map(u => `- ${u.usuario}: ${u.mensagens} mensagens`).join('\n')}
+    ${topParticipantes.map((u) => `- ${u.usuario}: ${u.mensagens} mensagens`).join("\n")}
     
     ⏰ **Horários de Maior Movimento**:
-    ${horarios.map(h => `- ${h.hora}h: ${h.mensagens} mensagens`).join('\n')}
+    ${horarios.map((h) => `- ${h.hora}h: ${h.mensagens} mensagens`).join("\n")}
     
     📌 **Discussões e Links Importantes**:
-    ${discussoes.map(d => `- ${d.conteudo} ${d.links?.join(', ')}`).join('\n')}
+    ${discussoes.map((d) => `- ${d.conteudo} ${d.links || ""}`).join("\n")}
+    
+    🤖 **Resumo Gerado por IA**:
+    ${resumoIA}
             `;
-        } catch (err) {
-            console.error('Erro ao gerar resumo diário:', err);
+    
+            console.log(`Resumo diário gerado para o grupo ${grupoId}:`);
+            console.log(resumoFinal);
+    
+            return resumoFinal;
+        } catch (error) {
+            console.error("Erro ao gerar resumo diário:", error);
             return null;
         }
     },
-    
-    
-};
+}
 
 module.exports = GroupsMonitor;

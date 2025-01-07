@@ -1,9 +1,10 @@
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai");
 
-const configuration = new Configuration({
-    apiKey: process.env.OPENAI_API_KEY,
+
+// Inicialize a classe OpenAI
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY, // Certifique-se de que a chave está no .env
 });
-const openai = new OpenAIApi(configuration);
 
 /**
  * Gera um resumo analítico das mensagens do grupo
@@ -11,21 +12,21 @@ const openai = new OpenAIApi(configuration);
  * @returns {Promise<string>} - Resumo gerado pela IA
  */
 async function generateSummary(messages) {
-    const prompt = `
-    Resuma as principais discussões do grupo com base nas mensagens abaixo:
-    ${messages.map((msg) => `- ${msg}`).join("\n")}
-    `;
+    const formattedMessages = messages.map((msg) => `- ${msg}`).join("\n");
 
     try {
-        const response = await openai.createCompletion({
-            model: "text-davinci-003",
-            prompt: prompt,
+        const response = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [
+                { role: "system", content: "Você é um assistente que gera resumos úteis de discussões em grupo." },
+                { role: "user", content: `Resuma as principais discussões do grupo com certa quantidade de detalhes:\n${formattedMessages}` },
+            ],
             max_tokens: 200,
         });
 
-        return response.data.choices[0].text.trim();
+        return response.choices[0].message.content.trim();
     } catch (error) {
-        console.error("Erro ao gerar resumo: ", error);
+        console.error("Erro ao gerar resumo:", error.response ? error.response.data : error.message);
         throw new Error("Não foi possível gerar o resumo.");
     }
 }

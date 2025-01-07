@@ -31,6 +31,8 @@ const deactivatePlayerByPhone = require('./model/player/deactivatePlayerByPhone.
 const activatePlayerByID = require('./model/player/activatePlayerByID.js');
 const activatePlayerByPhone = require('./model/player/activatePlayerByPhone.js');
 const saveImageToDrive = require('./modules/utils/saveImageToDrive');
+const { generateSummary } = require('./modules/utils/generateSummary');
+
 
 // Funções GPT
 const gptEneas = require('./modules/gptFunctions/gptEneas.js');
@@ -158,7 +160,6 @@ const chatGPTRequest = async (message) => {
 // Funções executadas ao iniciar
 client.on('ready', async () => {
     console.log('Executando funcionalidades adicionais...');
-    console.log("Chave da API:", process.env.OPENAI_API_KEY);
 
 
     // Executar funções gerais
