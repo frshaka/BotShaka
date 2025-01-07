@@ -18,13 +18,9 @@ const sendGroupSummary = (client) => {
                 return;
             }
 
-            console.log(`[LOG] Total de chats encontrados: ${grupos.length}`);
-
             // Processar cada grupo
             for (const grupo of grupos) {
                 if (grupo.isGroup) {
-                    console.log(`[LOG] Gerando resumo para o grupo: ${grupo.name}`);
-
                     try {
                         // Gerar resumo
                         const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized, client);
@@ -39,14 +35,10 @@ const sendGroupSummary = (client) => {
                             );
 
                             console.log(`[LOG] Resumo enviado com sucesso para o grupo: ${grupo.name}`);
-                        } else {
-                            console.log(`[LOG] Nenhum resumo foi gerado para o grupo: ${grupo.name}`);
                         }
                     } catch (grupoErr) {
                         console.error(`[ERRO] Falha ao processar o grupo ${grupo.name}:`, grupoErr);
                     }
-                } else {
-                    console.log(`[LOG] Ignorando chat que não é grupo: ${grupo.name || grupo.id._serialized}`);
                 }
             }
         } catch (err) {

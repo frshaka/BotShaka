@@ -124,10 +124,11 @@ const GroupsMonitor = {
                 return null;
             }
     
-            // Preparar dados para o ChatGPT
+            // Preparar dados para o Resumo Gerado por IA
             const mensagensParaResumo = [
-                ...discussoes.map((d) => d.conteudo),
                 ...topParticipantes.map((u) => `Usuário: ${u.usuario}, Mensagens: ${u.mensagens}`),
+                ...horarios.map((h) => `Horário: ${h.hora}h, Mensagens: ${h.mensagens}`),
+                ...discussoes.map((d) => `Discussão: ${d.conteudo}`),
             ];
     
             const resumoIA = await generateSummary(mensagensParaResumo);
@@ -138,9 +139,6 @@ const GroupsMonitor = {
     
     ⏰ **Horários de Maior Movimento**:
     ${horarios.map((h) => `- ${h.hora}h: ${h.mensagens} mensagens`).join("\n")}
-    
-    📌 **Discussões e Links Importantes**:
-    ${discussoes.map((d) => `- ${d.conteudo} ${d.links || ""}`).join("\n")}
     
     🤖 **Resumo Gerado por IA**:
     ${resumoIA}
@@ -155,6 +153,7 @@ const GroupsMonitor = {
             return null;
         }
     },
+    
 }
 
 module.exports = GroupsMonitor;

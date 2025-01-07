@@ -18,10 +18,10 @@ async function generateSummary(messages) {
         const response = await openai.chat.completions.create({
             model: "gpt-3.5-turbo",
             messages: [
-                { role: "system", content: "Você é um assistente que gera resumos úteis de discussões em grupo." },
-                { role: "user", content: `Resuma as principais discussões do grupo com certa quantidade de detalhes:\n${formattedMessages}` },
+                { role: "system", content: "Você é um assistente que gera resumos úteis de discussões a respeito do jogo Saint Seiya Lendas da Justiça em grupo." },
+                { role: "user", content: `Resuma as principais discussões do grupo em tópicos e com certa riqueza de detalhes e sempre exiba o nome dos personagens mencionados:\n${formattedMessages}` },
             ],
-            max_tokens: 200,
+            max_tokens: 4000,
         });
 
         return response.choices[0].message.content.trim();
