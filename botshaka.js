@@ -8,6 +8,8 @@ const path = require('path');
 const fs = require('fs');
 const cron = require('node-cron');
 const axios = require('axios');
+require('dotenv').config();
+
 
 // Funções de Grupos
 const changeGroupName = require('./modules/groups/changeGroupName.js');
@@ -132,6 +134,7 @@ client.on('message', async (message) => {
 // Função para ChatGPT
 const chatGPTRequest = async (message) => {
     try {
+        
         const apiKey = 'sk-proj-4kL6glBZCaMmJvZ8qGatT3BlbkFJ3voUusLaZaQ9iIe3W498';
         const apiUrl = 'https://api.openai.com/v1/chat/completions';
         const messages = [
@@ -155,6 +158,8 @@ const chatGPTRequest = async (message) => {
 // Funções executadas ao iniciar
 client.on('ready', async () => {
     console.log('Executando funcionalidades adicionais...');
+    console.log("Chave da API:", process.env.OPENAI_API_KEY);
+
 
     // Executar funções gerais
     cleanMessages(client);
