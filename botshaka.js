@@ -15,6 +15,8 @@ const welcomeNewMembers = require('./modules/groups/welcomeNewMembers.js');
 const sendAlertMessage = require('./modules/groups/sendAlertMessage.js');
 const ghostMentions = require('./modules/groups/ghostMentions.js');
 const markAll = require('./modules/groups/markAll.js');
+const sendGroupSummary = require('./modules/groups/sendGroupSummary.js');
+
 
 // Utilitários
 const cleanMessages = require('./modules/utils/cleanMessages.js');
@@ -115,7 +117,6 @@ client.on('message', async (message) => {
         if (message.from.endsWith('@g.us')) {
             try {
                 await GroupsMonitor.salvarMensagem(message);
-                console.log('Mensagem salva no banco de dados com sucesso.');
             } catch (err) {
                 console.error('Erro ao salvar mensagem no banco de dados:', err);
             }
@@ -172,26 +173,9 @@ client.on('ready', async () => {
     deactivatePlayerByPhone(client);
     activatePlayerByID(client);
     activatePlayerByPhone(client);
+    sendGroupSummary(client);
 });
 
-// Cron para envio de resumos diários
-cron.schedule('0 23 * * *', async () => {
-    try {
-        const SEU_NUMERO = '5515991236228';
-        const grupos = await client.getChats();
-
-        for (const grupo of grupos) {
-            if (grupo.isGroup) {
-                console.log(`Gerando resumo para o grupo: ${grupo.name}`);
-                const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized);
-                await client.sendMessage(`${SEU_NUMERO}@c.us`, `📂 **Grupo: ${grupo.name}**\n${resumo}`);
-                console.log(`Resumo enviado para o grupo: ${grupo.name}`);
-            }
-        }
-    } catch (err) {
-        console.error('Erro ao gerar ou enviar resumo diário:', err);
-    }
-});
 
 // Inicializa o servidor
 server.listen(port, () => {
