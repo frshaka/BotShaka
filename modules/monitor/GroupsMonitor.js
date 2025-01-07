@@ -128,6 +128,12 @@ const GroupsMonitor = {
             const horarios = await GroupsMonitor.getHorariosMovimento(grupoId, inicioDoDia, fimDoDia);
             const discussoes = await GroupsMonitor.getDiscussõesElinks(grupoId, inicioDoDia, fimDoDia);
     
+            // Verifica se há qualquer movimentação no grupo
+            if (topParticipantes.length === 0 && horarios.length === 0 && discussoes.length === 0) {
+                console.log(`Grupo ${grupoId} sem movimentação no período.`);
+                return null;
+            }
+    
             return `
     📊 **Top 5 Participantes Ativos**:
     ${topParticipantes.map(u => `- ${u.usuario}: ${u.mensagens} mensagens`).join('\n')}
@@ -140,9 +146,10 @@ const GroupsMonitor = {
             `;
         } catch (err) {
             console.error('Erro ao gerar resumo diário:', err);
-            return 'Erro ao gerar resumo.';
+            return null;
         }
     },
+    
     
 };
 

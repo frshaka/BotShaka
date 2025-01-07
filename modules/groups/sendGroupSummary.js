@@ -4,7 +4,7 @@ const GroupsMonitor = require('../monitor/GroupsMonitor'); // Importa o módulo 
 const SEU_NUMERO = '5515991236228'; // Substitua pelo seu número no formato internacional
 
 const sendGroupSummary = (client) => {
-    schedule.scheduleJob('59 11 * * *', async () => {
+    schedule.scheduleJob('20 13 * * *', async () => {
         try {
             console.log('Iniciando envio de resumo diário...');
             const grupos = await client.getChats();
@@ -13,8 +13,11 @@ const sendGroupSummary = (client) => {
                 if (grupo.isGroup) {
                     console.log(`Gerando resumo para o grupo: ${grupo.name}`);
                     const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized, client);
-                    await client.sendMessage(`${SEU_NUMERO}@c.us`, `📂 **Grupo: ${grupo.name}**\n${resumo}`);
-                    console.log(`Resumo enviado para o grupo: ${grupo.name}`);
+
+                    if (resumo) {
+                        await client.sendMessage(`${SEU_NUMERO}@c.us`, `📂 **Grupo: ${grupo.name}**\n${resumo}`);
+                        console.log(`Resumo enviado para o grupo: ${grupo.name}`);
+                    }
                 }
             }
         } catch (err) {
