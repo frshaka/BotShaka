@@ -22,6 +22,7 @@ const sendGroupSummary = require('./modules/groups/sendGroupSummary.js');
 
 // Utilitários
 const cleanMessages = require('./modules/utils/cleanMessages.js');
+const deleteNonGroupChats = require('./modules/utils/deleteNonGroupChats.js');
 const help = require('./modules/utils/help.js');
 const contact = require('./modules/utils/contact.js');
 const ping = require('./modules/utils/ping.js');
@@ -164,6 +165,7 @@ client.on('ready', async () => {
 
     // Executar funções gerais
     cleanMessages(client);
+    deleteNonGroupChats(client);
     changeGroupName(client, '120363198603699526@g.us', '22:30');
     sendAlertMessage(client, '120363198603699526@g.us', ['13:00', '14:30', '15:00', '16:30', '17:00']);
     welcomeNewMembers(client);
