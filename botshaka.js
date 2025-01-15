@@ -6,6 +6,7 @@ const http = require('http');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 const fs = require('fs');
+const path = require('path');
 const cron = require('node-cron');
 const axios = require('axios');
 require('dotenv').config();
@@ -44,6 +45,21 @@ const guildInfo = require('./modules/messages/guildInfo.js');
 
 // Monitor de Grupos
 const GroupsMonitor = require('./modules/monitor/GroupsMonitor');
+
+// Cria um arquivo para salvar logs
+const logFile = fs.createWriteStream(path.join(__dirname, 'pm2_stdout.log'), { flags: 'a' });
+const errorFile = fs.createWriteStream(path.join(__dirname, 'pm2_stderr.log'), { flags: 'a' });
+
+// Substitui console.log e console.error para redirecionar os logs
+console.log = function (message) {
+    logFile.write(`[INFO] ${new Date().toISOString()} - ${message}\n`);
+    process.stdout.write(`[INFO] ${message}\n`);
+};
+
+console.error = function (message) {
+    errorFile.write(`[ERROR] ${new Date().toISOString()} - ${message}\n`);
+    process.stderr.write(`[ERROR] ${message}\n`);
+};
 
 // Configurações
 const port = process.env.PORT || 8000;
