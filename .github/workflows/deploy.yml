@@ -18,13 +18,13 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H <IP_DA_VPS> >> ~/.ssh/known_hosts
+        ssh-keyscan -H ${{ secrets.VPS_HOST }} >> ~/.ssh/known_hosts
 
     - name: Deploy para a VPS
       run: |
-        ssh -i ~/.ssh/id_rsa <USUÁRIO>@<IP_DA_VPS> << 'EOF'
-          cd /caminho/do/seu/bot
+        ssh -i ~/.ssh/id_rsa ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
+          cd /home/deploy/shaka/BotShaka
           git pull origin main
           npm install --production
-          pm2 restart all # ou o comando para reiniciar seu bot
+          pm2 restart botshaka
         EOF
