@@ -5,3 +5,4 @@ node_modules
 /config/credentials.json
 Manual.txt
 /docs
+id_ed25519.pub
