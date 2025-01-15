@@ -3,7 +3,7 @@ name: Deploy BotShaka
 on:
   push:
     branches:
-      - main # branch monitorada
+      - master # branch monitorada
 
 jobs:
   deploy:
