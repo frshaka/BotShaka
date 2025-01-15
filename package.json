@@ -29,8 +29,10 @@
     "mysql2": "^2.3.3",
     "node-cron": "^3.0.3",
     "node-schedule": "^2.1.1",
+    "openai": "^4.78.1",
     "pg": "^8.12.0",
     "qrcode": "^1.4.4",
+    "sentiment": "^5.0.2",
     "socket.io": "2.3.0",
     "util": "^0.12.4",
     "whatsapp-web.js": "^1.26.1-alpha.3"
