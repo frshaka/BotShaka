@@ -23,7 +23,7 @@ jobs:
     - name: Deploy para a VPS
       run: |
         ssh -i ~/.ssh/id_ed25519 ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} << 'EOF'
-          cd /home/deploy/shaka/BotShaka
+          cd /root/shaka/BotShaka
           git pull origin main
           npm install --production
           pm2 restart botshaka
