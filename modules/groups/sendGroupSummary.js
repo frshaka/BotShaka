@@ -1,48 +1,41 @@
 const schedule = require('node-schedule');
 const GroupsMonitor = require('../monitor/GroupsMonitor'); // Importa o módulo do monitor de grupos
 
-const SEU_NUMERO = '5515991236228'; // Substitua pelo seu número no formato internacional
+// Lista de números para envio do resumo (no formato internacional)
+const NUMEROS_DESTINATARIOS = [
+    '5515991236228', // Substitua pelos números desejados
+    '5516982274243',
+    '5521981389149',
+];
 
 const sendGroupSummary = (client) => {
-    // Agendar envio diário às 15:49 (exemplo de horário)
-    schedule.scheduleJob('00 23 * * *', async () => {
-        console.log(`[LOG] Iniciando envio de resumo diário às ${new Date().toISOString()}`);
-
+    schedule.scheduleJob('0 23 * * *', async () => {
         try {
-            // Obter a lista de chats
-            console.log(`[LOG] Tentando obter chats do cliente...`);
+            console.log('Iniciando envio de resumo diário...');
             const grupos = await client.getChats();
 
-            if (!grupos || grupos.length === 0) {
-                console.log(`[LOG] Nenhum grupo foi encontrado.`);
-                return;
-            }
-
-            // Processar cada grupo
             for (const grupo of grupos) {
                 if (grupo.isGroup) {
-                    try {
-                        // Gerar resumo
-                        const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized, client);
+                    console.log(`Gerando resumo para o grupo: ${grupo.name}`);
+                    const resumo = await GroupsMonitor.gerarResumoDiario(grupo.id._serialized, client);
 
-                        if (resumo) {
-                            // Enviar resumo para o número configurado
-                            await client.sendMessage(
-                                `${SEU_NUMERO}@c.us`,
-                                `📂 **Grupo: ${grupo.name}**\n${resumo}`
-                            );
+                    if (resumo) {
+                        // Envia para cada número da lista
+                        for (const numero of NUMEROS_DESTINATARIOS) {
+                            await client.sendMessage(`${numero}@c.us`, `📂 **Grupo: ${grupo.name}**\n${resumo}`);
+                            console.log(`Resumo enviado para o número ${numero} referente ao grupo: ${grupo.name}`);
                         }
-                    } catch (grupoErr) {
-                        console.error(`[ERRO] Falha ao processar o grupo ${grupo.name}:`, grupoErr);
+                    } else {
+                        console.log(`Nenhuma movimentação no grupo ${grupo.name}, resumo não enviado.`);
                     }
                 }
             }
         } catch (err) {
-            console.error(`[ERRO] Falha geral no envio de resumos diários:`, err);
+            console.error('Erro ao gerar ou enviar resumo diário:', err);
         }
     });
 
-    console.log(`[LOG] Agendamento de envio de resumo diário configurado.`);
+    console.log('Agendamento de envio de resumo diário configurado.');
 };
 
 module.exports = sendGroupSummary;
