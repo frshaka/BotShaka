@@ -1,0 +1,30 @@
+name: Deploy BotShaka
+
+on:
+  push:
+    branches:
+      - main # branch monitorada
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout do Código
+      uses: actions/checkout@v3
+
+    - name: Configurar SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H <IP_DA_VPS> >> ~/.ssh/known_hosts
+
+    - name: Deploy para a VPS
+      run: |
+        ssh -i ~/.ssh/id_rsa <USUÁRIO>@<IP_DA_VPS> << 'EOF'
+          cd /caminho/do/seu/bot
+          git pull origin main
+          npm install --production
+          pm2 restart all # ou o comando para reiniciar seu bot
+        EOF
