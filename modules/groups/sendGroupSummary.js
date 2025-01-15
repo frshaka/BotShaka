@@ -5,7 +5,7 @@ const GroupsMonitor = require('../monitor/GroupsMonitor'); // Importa o módulo 
 const NUMEROS_DESTINATARIOS = [
     '5515991236228', // Substitua pelos números desejados
     '5516982274243',
-    '5521981389149',
+    '552198138914',
 ];
 
 const sendGroupSummary = (client) => {
