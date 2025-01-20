@@ -12,13 +12,13 @@ module.exports = (client, groupId, alertCloseTimes) => {
                 // Verifica o horário para determinar a mensagem
                 if (time === '13:00') {
                     mensagem = '*Começou a GvG Tchutchucos!!!* Grupo C, Ataque Liberado.';
-                } else if (time === '14:30') {
-                    mensagem = '*Atenção Grupo C*, faltam 30 minutos para finalizar os ataques. Quem ainda não atacou, ataque!!!';
                 } else if (time === '15:00') {
+                    mensagem = '*Atenção Grupo C*, faltam 30 minutos para finalizar os ataques. Quem ainda não atacou, ataque!!!';
+                } else if (time === '15:30') {
                     mensagem = '*Atenção Grupo B*, Ataque Liberado.';
-                } else if (time === '16:30') {
+                } else if (time === '17:30') {
                     mensagem = '*Atenção Grupo B*, faltam 30 minutos para finalizar os ataques. Quem ainda não atacou, ataque!!!';
-                } else if (time === '17:00') {
+                } else if (time === '18:00') {
                     mensagem = '*Atenção Grupo A*, Ataque Liberado.';
                 }
 

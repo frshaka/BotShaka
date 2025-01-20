@@ -179,7 +179,7 @@ client.on('ready', async () => {
     cleanMessages(client);
     deleteNonGroupChats(client);
     changeGroupName(client, '120363198603699526@g.us', '22:30');
-    sendAlertMessage(client, '120363198603699526@g.us', ['13:00', '14:30', '15:00', '16:30', '17:00']);
+    sendAlertMessage(client, '120363198603699526@g.us', ['13:00', '15:00', '15:30', '17:30', '18:00']);
     welcomeNewMembers(client);
     ghostMentions(client);
     markAll(client);
