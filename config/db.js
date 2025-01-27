@@ -8,7 +8,7 @@ const poolAdmin = new Pool({
   connectionString: databaseUrl
 });
 
-// Pool para o banco eneasredpill
+// Pool para o banco eneasredpill (usando as mesmas credenciais do postgres)
 const pool = new Pool({
   connectionString: databaseUrl.replace('/postgres', '/eneasredpill')
 });
@@ -16,7 +16,7 @@ const pool = new Pool({
 // Função para verificar e criar o banco de dados, se necessário
 async function createDatabaseIfNotExists() {
   const checkDbQuery = `SELECT 1 FROM pg_database WHERE datname = 'eneasredpill'`;
-  const createDbQuery = `CREATE DATABASE eneasredpill`;
+  const createDbQuery = `CREATE DATABASE eneasredpill WITH OWNER = postgres`;
 
   try {
     const res = await poolAdmin.query(checkDbQuery);
@@ -24,13 +24,16 @@ async function createDatabaseIfNotExists() {
       console.log("Banco de dados 'eneasredpill' não encontrado. Criando...");
       await poolAdmin.query(createDbQuery);
       console.log("Banco de dados 'eneasredpill' criado com sucesso.");
+      
+      // Garantir que o usuário postgres tenha todos os privilégios necessários
+      await poolAdmin.query(`GRANT ALL PRIVILEGES ON DATABASE eneasredpill TO postgres`);
     } else {
       console.log("Banco de dados 'eneasredpill' já existe.");
     }
   } catch (err) {
     console.error('Erro ao verificar/criar o banco de dados:', err.stack);
   } finally {
-    poolAdmin.end(); // Fecha a conexão com o banco de dados postgres
+    await poolAdmin.end(); // Fecha a conexão com o banco de dados postgres
   }
 }
 
