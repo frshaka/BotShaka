@@ -4,7 +4,7 @@
   "description": "BotShaka: based on Whatsapp API",
   "main": "app.js",
   "scripts": {
-    "start": "node botshaka.js",
+    "start": "npm i postgres && node botshaka.js",
     "start:dev": "nodemon botshaka.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
