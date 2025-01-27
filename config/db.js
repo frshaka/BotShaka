@@ -1,21 +1,16 @@
 const { Pool } = require('pg');
 
-// Configurações da conexão inicial com o banco de dados padrão 'postgres'
+// URL de conexão fornecida pelo Coolify
+const databaseUrl = 'postgres://postgres:postgres@s04g8ckw0sgokkw0kwcc0048:5432/postgres';
+
+// Configuração do pool usando a URL
 const poolAdmin = new Pool({
-  user: 'postgres',            // Substitua pelo seu usuário do PostgreSQL
-  host: 'localhost',           // Host do banco de dados
-  database: 'postgres',        // Banco de dados padrão onde você pode criar outros bancos
-  password: 'postgres',        // Senha do usuário
-  port: 5432,                  // Porta padrão do PostgreSQL
+  connectionString: databaseUrl
 });
 
-// Conexão ao banco de dados 'eneasredpill'
+// Pool para o banco eneasredpill
 const pool = new Pool({
-  user: 'postgres',            // Substitua pelo seu usuário do PostgreSQL
-  host: 'localhost',           // Host do banco de dados
-  database: 'eneasredpill',    // Nome do banco de dados a ser usado
-  password: 'postgres',        // Senha do usuário
-  port: 5432,                  // Porta padrão do PostgreSQL
+  connectionString: databaseUrl.replace('/postgres', '/eneasredpill')
 });
 
 // Função para verificar e criar o banco de dados, se necessário
