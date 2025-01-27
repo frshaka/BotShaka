@@ -3,26 +3,40 @@ const { Pool } = require('pg');
 // URL de conexão fornecida pelo Coolify
 const databaseUrl = 'postgres://postgres:postgres@s04g8ckw0sgokkw0kwcc0048:5432/postgres';
 
-// Função para criar URL de conexão para o banco eneasredpill
-function createEneasDBUrl(originalUrl) {
-    return originalUrl.replace('/postgres', '/eneasredpill');
+// Função para obter uma nova conexão com o banco eneasredpill
+function getEneasDBPool() {
+    return new Pool({
+        user: 'postgres',
+        password: 'postgres',
+        host: 's04g8ckw0sgokkw0kwcc0048',
+        port: 5432,
+        database: 'eneasredpill'
+    });
 }
 
-// Pool de conexão única que será reutilizada
+// Pool para administração inicial
+const poolAdmin = new Pool({
+    user: 'postgres',
+    password: 'postgres',
+    host: 's04g8ckw0sgokkw0kwcc0048',
+    port: 5432,
+    database: 'postgres'
+});
+
+// Pool para o banco eneasredpill
 let pool;
 
 // Função para verificar e criar o banco de dados, se necessário
 async function createDatabaseIfNotExists() {
-    const adminPool = new Pool({ connectionString: databaseUrl });
-    
+    const checkDbQuery = `SELECT 1 FROM pg_database WHERE datname = 'eneasredpill'`;
+    const createDbQuery = `CREATE DATABASE eneasredpill WITH OWNER postgres`;
+
     try {
-        const checkDbQuery = `SELECT 1 FROM pg_database WHERE datname = 'eneasredpill'`;
-        const res = await adminPool.query(checkDbQuery);
-        
+        const res = await poolAdmin.query(checkDbQuery);
         if (res.rowCount === 0) {
             console.log("Banco de dados 'eneasredpill' não encontrado. Criando...");
-            await adminPool.query('CREATE DATABASE eneasredpill WITH OWNER postgres');
-            await adminPool.query('GRANT ALL PRIVILEGES ON DATABASE eneasredpill TO postgres');
+            await poolAdmin.query(createDbQuery);
+            await poolAdmin.query(`GRANT ALL PRIVILEGES ON DATABASE eneasredpill TO postgres`);
             console.log("Banco de dados 'eneasredpill' criado com sucesso.");
         } else {
             console.log("Banco de dados 'eneasredpill' já existe.");
@@ -31,13 +45,11 @@ async function createDatabaseIfNotExists() {
         console.error('Erro ao verificar/criar o banco de dados:', err.stack);
         throw err;
     } finally {
-        await adminPool.end();
+        await poolAdmin.end();
     }
 
-    // Cria o pool principal para o banco eneasredpill
-    pool = new Pool({
-        connectionString: createEneasDBUrl(databaseUrl)
-    });
+    // Inicializa o pool para o banco eneasredpill
+    pool = getEneasDBPool();
 }
 
 // Função para criar tabelas no banco de dados
