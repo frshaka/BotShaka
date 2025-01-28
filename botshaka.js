@@ -45,7 +45,7 @@ const guildInfo = require('./modules/messages/guildInfo.js');
 // Monitor de Grupos
 const GroupsMonitor = require('./modules/monitor/GroupsMonitor');
 
-/*// Redireciona logs padrão para PM2
+// Redireciona logs padrão para PM2
 console.log = (message) => {
     fs.appendFileSync('/root/.pm2/logs/botshaka-out.log', `[INFO] ${new Date().toISOString()} - ${message}\n`);
     process.stdout.write(`[INFO] ${message}\n`);
@@ -54,7 +54,7 @@ console.log = (message) => {
 console.error = (message) => {
     fs.appendFileSync('/root/.pm2/logs/botshaka-error.log', `[ERROR] ${new Date().toISOString()} - ${message}\n`);
     process.stderr.write(`[ERROR] ${message}\n`);
-};*/
+};
 
 // Configurações
 const port = process.env.PORT || 8000;
